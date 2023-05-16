@@ -1,0 +1,14 @@
+<section class="section">
+{{#if user.role}}
+    {{#each data}}
+        <article>
+            <img src={{this.thumbnail}} alt="">
+            <p>{{this.description}}</p>
+            <p>{{this.price}}</p>
+        </article>
+    {{/each}}
+    {{else}}
+        <p>{{data.message}}</p>
+{{/if}}
+
+</section>
