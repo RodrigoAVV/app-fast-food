@@ -25,4 +25,9 @@ export default class Product{
         const result = await productModel.deleteOne({_id:id})
         return result
     }
+
+    search = async(id) => {
+        const result = await productModel.findOne({_id:id})
+        return result
+    }
 }

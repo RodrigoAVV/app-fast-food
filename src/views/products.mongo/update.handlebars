@@ -1,25 +1,30 @@
 <h3 id="mje"></h3>
+<form>
+    <div class="input-group mb-2">
+    <input name="id" id="id" type="text" class="form-control" placeholder="ID del producto" aria-label="Username">
+    <button type="button" class="btn btn-secondary" id="btnSearchProduct">Buscar producto por ID</button>
+    </div>
+</form>
+
 <form enctype="multipart/form-data">
     <div class="input-group mb-2">
-    <input name="id" type="text" class="form-control" placeholder="ID del producto" aria-label="Username">
-    </div>
-    <div class="input-group mb-2">
     <span class="input-group-text">#</span>
-    <input name="title" type="text" class="form-control" placeholder="Titulo" aria-label="Username">
+    <input name="title" type="text" class="form-control" id="title" placeholder="Titulo" aria-label="Username">
     <span class="input-group-text">#</span>
-    <input name="description" type="text" class="form-control" placeholder="Descripcion" aria-label="Server">
+    <input name="description" type="text" class="form-control" id="description" placeholder="Descripcion" aria-label="Server">
     <span class="input-group-text">#</span>
-    <input name="price" type="number" class="form-control" placeholder="Precio" aria-label="Server">
+    <input name="price" type="number" class="form-control" id="price" placeholder="Precio" aria-label="Server">
     </div>
 
     <div class="input-group mb-2">
     <span class="input-group-text">#</span>
-    <input name="thumbnail" type="file" class="form-control" aria-label="Username">
+    <input name="thumbnail" type="file" class="form-control" id="thumbnail" aria-label="Username">
     <span class="input-group-text">#</span>
-    <input name="code" type="text" class="form-control" placeholder="Código" aria-label="Server">
+    <input name="code" type="text" class="form-control" id="code" placeholder="Código" aria-label="Server">
     <span class="input-group-text">#</span>
-    <input name="stock" type="number" class="form-control" placeholder="Stock" aria-label="Server">
+    <input name="stock" type="number" class="form-control" id="stock" placeholder="Stock" aria-label="Server">
     </div>
-    <button type="submit" class="btn btn-secondary">Nuevo producto</button>
+    <input type="hidden" name="productId" id="productId">
+    <button type="submit" class="btn btn-secondary" id="btnUpdateProduct">Actualizar producto</button>
 </form>
 <script src="/js/products.mongo/update.js"></script>
