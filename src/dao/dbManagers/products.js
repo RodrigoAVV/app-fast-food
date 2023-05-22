@@ -1,5 +1,6 @@
 import { isValidObjectId } from 'mongoose'
 import { productModel } from '../models/products.js'
+
 export default class Product{
     constructor(){
         console.log('user DB')
@@ -29,5 +30,21 @@ export default class Product{
     search = async(id) => {
         const result = await productModel.findOne({_id:id})
         return result
+    }
+
+    filter = async(limit,page,sort,query) => {
+        const products = await productModel.aggregate([
+            {
+                $match: {title:query}
+            },
+            {
+                $sort: {price:sort}
+            },
+            {
+                $limit:limit
+            }
+        ])
+
+        return products
     }
 }
