@@ -30,8 +30,8 @@ app.use('/api/products2',productRouterMongoDB)
 app.use('/api/cart2',cartRouterMongoDB)
 app.use('/api/messages',messageRouterMongoDB)
 
-app.use('/api/products/',productRouter)
-app.use('/api/carts/',carRouter)
+app.use('/api/products',productRouter)
+app.use('/api/carts',carRouter)
 
 
 app.use(errorMiddleware)

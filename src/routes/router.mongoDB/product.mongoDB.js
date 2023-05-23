@@ -1,28 +1,30 @@
 import {Router} from 'express'
 import Product from '../../dao/dbManagers/products.js'
 
+import { isValidObjectId, Types } from "mongoose";
+
 const folder = 'products.mongo'
 
 import _ from 'lodash';
-import { isValidObjectId } from 'mongoose';
 
 const router = Router()
 
 const productManager = new Product()
+
 router.get('/', async (req,res,next) => {
     try {
         const { limit,page,sort,query } = req.query
-        const data = await productManager.filter(parseInt(limit),page,parseInt(sort),query)
+        let data
+        if(limit && page && sort && query){
+            data = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
+        }else{
+            data = await productManager.getAll()
+        }
         let user= {
             name:'María',
             role:'admin'
         }
         res.render(`${folder}/index`,{data,user})
-
-
-       // console.log(`${limit} ${page} ${short} ${query}`)
-        //return res.send({success:true,message:'ok'})
-        //res.render(`${folder}/index`,{data,user})
     } catch (err) {
         next(err)
     }

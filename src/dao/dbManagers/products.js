@@ -44,7 +44,7 @@ export default class Product{
                 $limit:limit
             }
         ])
-
+        //let products = await productModel.paginate({price:1,title:query},{limit:limit,page:page})
         return products
     }
 }

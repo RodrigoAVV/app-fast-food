@@ -17,4 +17,19 @@ export default class Cart{
         const res = await cartModel.create(cart)
         return res
     }
+
+    search = async(id) => {
+        const result = await cartModel.findOne({_id:id})
+        return result
+    }
+
+    deleteProductCar = async(id,newCart) => {
+        const result = await cartModel.updateOne({_id:id},newCart)
+        return result
+    }
+
+    delete = async (id) => {
+        const result = await cartModel.delete({_id:id})
+        return result
+    }
 }
