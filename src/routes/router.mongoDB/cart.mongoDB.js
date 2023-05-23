@@ -15,26 +15,6 @@ router.get('/', async(req,res,next) => {
     }
 })
 
-router.post('/', async(req,res,next) => {
-    try {
-        const { body } = req
-        const {id} = body
-        const newCart = {
-            id:"45454",
-            products:[
-                {_id:'645e7a4dd8617300ce644577',quantity:2},
-                {_id:'6463b97a6d23955b6a595227',quantity:1}
-            ]
-        }
-        const respuesta = await cartManager.create(newCart)
-        //const cart = cartManager.search('6469996f6792d01caa145e9a')
-        //cart.products.push(id)
-        return res.send({success:false,message:respuesta})
-    } catch (err) {
-        next(err)
-    }
-})
-
 router.delete('/:cid/products/:pid', async(req,res,next) => {
     try {
         const cid = req.params.cid
@@ -42,11 +22,29 @@ router.delete('/:cid/products/:pid', async(req,res,next) => {
         if(isValidObjectId(cid) && isValidObjectId(pid)){
             const cart = await cartManager.search(cid)
             const newProduct = cart.products.filter(item=>item._id != pid)
-            console.log(newProduct)
-            //cart.products.push(newProduct)
-            
-            //const result = await cartManager.deleteProductCar(cid,newCart)
-           
+            const newCart = {_id:cart._id,products:[newProduct]}
+            const result = await cartManager.deleteProductCar(cid,newCart)
+            if(result){
+                return res.send({success:true,message:result})
+            }
+        }
+    } catch (err) {
+        next(err)
+    }
+})
+
+router.put('/:cid', async(req,res,next) => {
+    try {
+        const cid = req.params.cid
+        if(isValidObjectId(cid)){
+            const cart = await cartManager.search(cid)
+            cart.products=[]
+            cart.products.push({_id:'6463b97a6d23955b6a595227',quantity:3})
+            cart.products.push({_id:'64640a37d46d5822d3c0c374',quantity:2})
+            const result = await cartManager.deleteProductCar(cid,cart)
+            if(result){
+                return res.send({success:true,message:result})
+            }
         }
     } catch (err) {
         next(err)
