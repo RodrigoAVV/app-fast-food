@@ -6,7 +6,7 @@ export default class Cart{
 
     getAll = async () => {
         const carts = await cartModel.find()
-        return carts.map(cart=> cart.toObject())
+        return carts
     }
 
     save = async () => {
