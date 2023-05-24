@@ -58,18 +58,8 @@ router.put('/:cid/products/:pid', async(req,res,next) => {
         const cant = req.query.cant
         if(isValidObjectId(cid) && isValidObjectId(pid) && cant){
             const cart = await cartManager.search(cid)
-            //console.log(cart)
-            const newQuantityProduct = cart.products.map(function(product){
-                if(product=>product._id.toString() === pid){
-                    return{
-                        
-                        quantity:cant
-                    }
-                }else{
-                    return product
-                }
-            }) 
-            console.log(newQuantityProduct)
+            
+            console.log(cart)
         }
     } catch (err) {
         next(err)
@@ -81,8 +71,8 @@ router.delete('/:cid', async(req,res,next) => {
         const cid = req.params.cid
         
         if(isValidObjectId(cid)){
-            const cart = await cartManager.getAll()
-            console.log(JSON.stringify(cart))
+            const cart = await cartManager.getAll(cid)
+            
         }
     } catch (err) {
         next(err)
