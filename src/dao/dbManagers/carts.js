@@ -4,9 +4,9 @@ export default class Cart{
         console.log('car DB')
     }
 
-    getAll = async () => {
-        const carts = await cartModel.find()
-        return carts
+    getAll = async (cid) => {
+        const carts = await cartModel.find({_id:cid})
+       console.log(carts[0])
     }
 
     save = async () => {
