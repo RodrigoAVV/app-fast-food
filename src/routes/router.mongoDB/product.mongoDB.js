@@ -17,6 +17,7 @@ router.get('/', async (req,res,next) => {
         let data
         if(limit && page && sort && query){
             data = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
+            console.log(JSON.stringify(data))
         }else{
             data = await productManager.getAll()
         }

@@ -1,4 +1,3 @@
-import { isValidObjectId } from 'mongoose'
 import { productModel } from '../models/products.js'
 
 export default class Product{
@@ -31,9 +30,9 @@ export default class Product{
         const result = await productModel.findOne({_id:id})
         return result
     }
-
+    
     filter = async(limit,page,sort,query) => {
-        const products = await productModel.aggregate([
+        /*const products = await productModel.aggregate([
             {
                 $match: {title:query}
             },
@@ -43,8 +42,9 @@ export default class Product{
             {
                 $limit:limit
             }
-        ])
-        //let products = await productModel.paginate({price:1,title:query},{limit:limit,page:page})
+        ])*/
+        let products = await productModel.paginate({},{page:page,limit:limit})
         return products
     }
+    
 }
