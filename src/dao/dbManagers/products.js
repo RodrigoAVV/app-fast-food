@@ -43,8 +43,9 @@ export default class Product{
                 $limit:limit
             }
         ])*/
-        let products = await productModel.paginate({},{page:page,limit:limit})
-        return products
+        let products = await productModel.paginate({title:query},{price:sort},{page:page,limit:limit})
+        return products.docs.map(product => product.toObject())
+        
     }
     
 }

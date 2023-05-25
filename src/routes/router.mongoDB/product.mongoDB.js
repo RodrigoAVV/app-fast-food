@@ -17,15 +17,17 @@ router.get('/', async (req,res,next) => {
         let data
         if(limit && page && sort && query){
             data = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
-            console.log(JSON.stringify(data))
+            
         }else{
             data = await productManager.getAll()
         }
         let user= {
             name:'María',
-            role:'admin'
+            role:true
         }
-        res.render(`${folder}/index`,{data,user})
+        console.log(data)
+        res.render(`${folder}/indexDoc`,{data,user})
+        //return res.json(data)
     } catch (err) {
         next(err)
     }

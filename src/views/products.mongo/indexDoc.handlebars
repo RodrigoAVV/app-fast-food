@@ -1,0 +1,19 @@
+<section class="row row-cols-1 row-cols-md-4 g-4">
+{{#if user.role}}
+    {{#each data}}
+        <article class="col">
+            <div class="card h-100">
+                <img src={{thumbnail}} alt="" class="card-img-top">
+                <div class="card-body">
+                    <p class="card-title">{{description}}</p>
+                    <p class="card-text">{{price}}</p>
+                    <a href="#" class="btn btn-primary addProduct" id={{_id}}>Go somewhere</a>
+                </div>
+            </div>
+        </article>
+    {{/each}}
+    {{else}}
+        <p></p>
+{{/if}}
+</section>
+<script src=""></script>
