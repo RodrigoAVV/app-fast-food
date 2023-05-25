@@ -13,39 +13,29 @@ const productManager = new Product()
 
 router.get('/', async (req,res,next) => {
     try {
-        const { limit,page,sort,query } = req.query
+        let { limit,page,sort,query } = req.query
         let data
-        if(limit && page && sort && query){
-            data = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
-            
-        }else{
+        if(!limit){
+            limit = 10
+        }
+        if(!page){
+            page=1
+        }
+        if(!query){
             data = await productManager.getAll()
         }
+        data = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
         let user= {
             name:'María',
             role:true
         }
-        console.log(data)
         res.render(`${folder}/indexDoc`,{data,user})
         //return res.json(data)
     } catch (err) {
         next(err)
     }
 })
-/*
-router.get('/', async (req,res,next) => {
-    try {
-        const data = await productManager.getAll()
-        let user= {
-            name:'María',
-            role:'admin'
-        }
-        res.render(`${folder}/index`,{data,user})
-    } catch (err) {
-        next(err)
-    }
-})
-*/
+
 router.get('/create', async (req,res,next) => {
     try {
         res.render(`${folder}/create`)
