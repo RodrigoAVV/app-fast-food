@@ -3,10 +3,10 @@ export default class Cart{
     constructor(){
         console.log('car DB')
     }
-
-    getAll = async (cid) => {
-        const carts = await cartModel.find({_id:cid})
-       console.log(carts[0])
+    //Revisado
+    getAll = async () => {
+        const carts = await cartModel.find()
+        return carts.map(car => car.toObject())
     }
 
     save = async () => {
@@ -20,8 +20,16 @@ export default class Cart{
 
     search = async(id) => {
         const result = await cartModel.findOne({_id:id})
-        return result
+        const _id = result._id
+        const data = result.products.map(product => product.toObject())
+        data.push(_id)
+        return data
     }
+
+    search2 = async(id) => {
+        const result = await cartModel.findOne({_id:id})
+        return result
+    }  
 
     deleteProductCar = async(id,newCart) => {
         const result = await cartModel.updateOne({_id:id},newCart)

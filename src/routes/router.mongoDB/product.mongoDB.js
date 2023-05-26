@@ -23,8 +23,13 @@ router.get('/', async (req,res,next) => {
         }
         if(!query){
             data = await productManager.getAll()
+            console.log(data)
+        }else{
+            data = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
+            console.log(data)
         }
-        data = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
+        
+        //console.log(data)
         let user= {
             name:'María',
             role:true
