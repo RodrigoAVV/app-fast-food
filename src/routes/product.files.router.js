@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import ProductService from '../../dao/fileManagers/product.service.js'
+import ProductService from '../dao/product.file.dao.js'
 const router = Router()
 
 import { v4 as uuidv4 } from 'uuid';

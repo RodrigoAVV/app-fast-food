@@ -1,18 +1,18 @@
 import express from 'express'
-
-import productRouter from './src/routes/router.files/product.router.js'
-import carRouter from './src/routes/router.files/car.router.js'
-
 import mongoose  from 'mongoose'
-
-import productRouterMongoDB from './src/routes/router.mongoDB/product.mongoDB.js'
-import cartRouterMongoDB from './src/routes/router.mongoDB/cart.mongoDB.js'
-import messageRouterMongoDB from './src/routes/router.messaage/message.mongoDB.js'
+import cartFilesRouter from './src/routes/cart.files.router.js'
+import cartMongoDBRouter from './src/routes/cart.mongoDB.router.js'
+import messageMongoDBRouter from './src/routes/message.mongoDB.router.js'
+import productFilesRouter from './src/routes/product.files.router.js'
+import productMongoDBRouter from './src/routes/product.mongoDB.router.js'
+import userMongoDBRouter from './src/routes/user.mongoDB.router.js'
 
 import errorMiddleware from './src/middlewares/errorMiddleware.js'
 import handlebars from 'express-handlebars'
 import __dirname from './src/utils.js'
 import {Server} from 'socket.io'
+
+import cookieParser from 'cookie-parser'
 
 const app = express()
 
@@ -26,15 +26,19 @@ app.engine('handlebars',handlebars.engine())
 app.set('views',`${__dirname}/views`)
 app.set('view engine','handlebars')
 
-app.use('/api/products2',productRouterMongoDB)
-app.use('/api/cart2',cartRouterMongoDB)
-app.use('/api/messages',messageRouterMongoDB)
+app.use('/api/products2',productMongoDBRouter)
+app.use('/api/cart2',cartMongoDBRouter)
+app.use('/api/messages',messageMongoDBRouter)
 
-app.use('/api/products',productRouter)
-app.use('/api/carts',carRouter)
+app.use('/api/products',productFilesRouter)
+app.use('/api/carts',cartFilesRouter)
+
+app.use('/api/users',userMongoDBRouter)
 
 
 app.use(errorMiddleware)
+
+app.subscribe(cookieParser())
 
 
 const server = app.listen(8081,()=>console.log('Listening on port 8081'))

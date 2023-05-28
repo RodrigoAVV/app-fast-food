@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import Message from '../../dao/messageManager/messages.js'
+import Message from '../dao/message.dao.js'
 
 const folder = 'messages.mongo'
 

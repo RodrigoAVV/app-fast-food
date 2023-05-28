@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import Product from '../../dao/dbManagers/products.js'
+import Product from '../dao/product.mongoDB.dao.js'
 
 import { isValidObjectId, Types } from "mongoose";
 
@@ -13,28 +13,20 @@ const productManager = new Product()
 
 router.get('/', async (req,res,next) => {
     try {
-        let { limit,page,sort,query } = req.query
-        let data
-        if(!limit){
-            limit = 10
-        }
-        if(!page){
-            page=1
-        }
-        if(!query){
-            data = await productManager.getAll()
-            console.log(data)
-        }else{
-            data = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
-            console.log(data)
-        }
-        
-        //console.log(data)
-        let user= {
+        const { page = 1,limit = 1, sort = '', query = '' } = req.query
+        const { docs,
+            hasPrevPage,
+            hasNextPage,
+            nextPage,
+            prevPage } = await productManager.filter(parseInt(limit),parseInt(page),parseInt(sort),query)
+        const products = docs
+        const user= {
             name:'María',
             role:true
         }
-        res.render(`${folder}/indexDoc`,{data,user})
+        console.log(products)
+        
+        res.render(`${folder}/indexDoc`,{products,user,hasPrevPage,hasNextPage,nextPage,prevPage})
         //return res.json(data)
     } catch (err) {
         next(err)

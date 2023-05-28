@@ -1,12 +1,12 @@
-import { cartModel } from "../models/carts.js"
+import { cartModel } from './models/carts.js'
 export default class Cart{
     constructor(){
         console.log('car DB')
     }
-    //Revisado
+    
     getAll = async () => {
-        const carts = await cartModel.find()
-        return carts.map(car => car.toObject())
+        const carts = await cartModel.find().lean()
+        return carts
     }
 
     save = async () => {

@@ -1,4 +1,4 @@
-import { productModel } from '../models/products.js'
+import { productModel } from '../dao/models/products.js'
 
 export default class Product{
     constructor(){
@@ -43,8 +43,8 @@ export default class Product{
                 $limit:limit
             }
         ])*/
-        let products = await productModel.paginate({title:query},{price:sort},{page:page,limit:limit})
-        return products.docs.map(product => product.toObject())
+        let products = await productModel.paginate({/*title:query},{price:sort*/},{limit,page,lean:true})
+        return products
         
     }
     
