@@ -19,11 +19,8 @@ export default class Cart{
     }
 
     search = async(id) => {
-        const result = await cartModel.findOne({_id:id})
-        const _id = result._id
-        const data = result.products.map(product => product.toObject())
-        data.push(_id)
-        return data
+        const result = await cartModel.findOne({_id:id}).lean()
+        return result
     }
 
     search2 = async(id) => {

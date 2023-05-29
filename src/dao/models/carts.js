@@ -12,6 +12,7 @@ const cartSchema = new mongoose.Schema({
                 },
                 quantity:{
                     type:Number,
+                    required:true,
                     default:1
                 }
             }
@@ -23,4 +24,9 @@ const cartSchema = new mongoose.Schema({
 cartSchema.pre('find',function(){
     this.populate('products.product')
 })
+
+cartSchema.pre('findOne',function(){
+    this.populate('products.product')
+})
+
 export const cartModel = mongoose.model(cartCollection,cartSchema)                               
