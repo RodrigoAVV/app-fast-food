@@ -13,7 +13,15 @@ const userDao = new User()
 
 router.get('/', async (req,res,next) => {
     try {
-        return res.render(`${folder}/index`)
+        return res.render(`${folder}/index`,{layout:'mainLogin'})
+    } catch (err) {
+        next(err)
+    }
+})
+
+router.get('/create', async(req,res) => {
+    try {
+        return res.render(`${folder}/create`,{layout:'mainLogin'})
     } catch (err) {
         next(err)
     }
