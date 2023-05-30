@@ -13,6 +13,8 @@ import __dirname from './src/utils.js'
 import {Server} from 'socket.io'
 
 import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import FileStore from 'session-file-store'
 
 const app = express()
 
@@ -21,6 +23,15 @@ app.use(express.static(`${__dirname}/public`))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+const fileStorage = FileStore(session)
+app.use(cookieParser())
+
+app.use(session({
+    store:new fileStorage({path:'./src/sesions',ttl:100,retries:0}),
+    secret:'secretUser',
+    resave:false,
+    saveUninitialized:false
+}))
 
 app.engine('handlebars',handlebars.engine())
 app.set('views',`${__dirname}/views`)

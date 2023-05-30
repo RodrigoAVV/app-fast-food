@@ -34,9 +34,12 @@ router.post('/store', async(req,res,next) => {
         console.log(`${name} ${lastname1} ${lastname2} ${run} ${email} ${pass}`)
         if(_.isNil(body) || !name || !lastname1 || !lastname2  || !run || !email || !pass)
             return (res.status(400).json({success:false,message:'Faltan datos por completar'}))
-        const data = await userDao.save(body)
+        const exists = await userDao.getOne(run)
+        if(exists)
+            return (res.status(400).json({success:false,message:'Este run ya se encuentra registrado'}))
+        /* const data = await userDao.save(body)
         data ? res.status(200).send({success:true,message:'Usuario agregado correctamente'}) :
-            res.status(200).send({success:false,message:'Error al registrar usuario'})
+            res.status(200).send({success:false,message:'Error al registrar usuario'}) */
     } catch (err) {
         next(err)
     }
