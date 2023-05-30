@@ -9,6 +9,7 @@ npm install dotenv --save
 
 
 
+
 #'C:\Users\Familia\Documents\app-fast-food\src\routes\product.router.js'
 #La ruta debe aparecer completa en la consola, navegar por carpetas
 

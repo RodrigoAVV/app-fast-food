@@ -4,8 +4,8 @@ document.querySelector('form').addEventListener('submit',e=>{
     const data = Object.fromEntries(
         new FormData(e.target)
     )
-    console.log(data)
-    //llamandoAPI(data)
+	//console.log(data)
+    llamandoAPI(data)
 })
 
 const llamandoAPI = async (data) => {

@@ -10,5 +10,8 @@ export default class User{
         return users.map(user => user.toObject())
     }
     
-    
+    save = async (user) =>{
+        const result = await userModel.create(user)
+        return result
+    }
 }
