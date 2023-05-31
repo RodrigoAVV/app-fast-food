@@ -9,9 +9,17 @@ export default class User{
         const users = await userModel.find()
         return users.map(user => user.toObject())
     }
-    getOne = async (run) => {
+    getOneRun = async (run) => {
         const user = await userModel.findOne({run})
         return user
+    }
+    getOneEmail = async (email) => {
+        const user = await userModel.findOne({email})
+        return user
+    }
+    login = async(run,pass) => {
+        const result = userModel.findOne({run,pass})
+        return result
     }
     save = async (user) =>{
         const result = await userModel.create(user)

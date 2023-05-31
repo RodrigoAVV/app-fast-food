@@ -17,7 +17,7 @@ const llamandoAPI = async (data) => {
         body:JSON.stringify(data),
 		cache: 'no-cache'
 	}
-	const respuesta = await fetch(`/api/users/store`,options)
+	const respuesta = await fetch(`/api/users/login`,options)
 	const data2 = await respuesta.json()
 	mje.innerHTML=data2.message
 	

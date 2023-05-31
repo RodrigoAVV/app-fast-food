@@ -6,6 +6,7 @@ import messageMongoDBRouter from './src/routes/message.mongoDB.router.js'
 import productFilesRouter from './src/routes/product.files.router.js'
 import productMongoDBRouter from './src/routes/product.mongoDB.router.js'
 import userMongoDBRouter from './src/routes/user.mongoDB.router.js'
+import MongoStore from 'connect-mongo'
 
 import errorMiddleware from './src/middlewares/errorMiddleware.js'
 import handlebars from 'express-handlebars'
@@ -26,13 +27,6 @@ app.use(express.urlencoded({extended:true}))
 const fileStorage = FileStore(session)
 app.use(cookieParser())
 
-app.use(session({
-    store:new fileStorage({path:'./src/sesions',ttl:100,retries:0}),
-    secret:'secretUser',
-    resave:false,
-    saveUninitialized:false
-}))
-
 app.engine('handlebars',handlebars.engine())
 app.set('views',`${__dirname}/views`)
 app.set('view engine','handlebars')
@@ -45,7 +39,21 @@ app.use('/api/products',productFilesRouter)
 app.use('/api/carts',cartFilesRouter)
 
 app.use('/api/users',userMongoDBRouter)
+try {
+    await mongoose.connect('mongodb+srv://rodrigo:1cWz0gUv86AbcNd5@clusterfastfood.zvkhedb.mongodb.net/?retryWrites=true&w=majority')
+} catch (err) {
+    console.log(err)
+}
 
+app.use(session({
+    store:MongoStore.create({
+        client:mongoose.connection.getClient(),
+        ttl:15
+    }),
+    secret:'fastfood140',
+    resave:true,
+    saveUninitialized:true
+}))
 
 app.use(errorMiddleware)
 
@@ -54,11 +62,7 @@ app.subscribe(cookieParser())
 
 const server = app.listen(8081,()=>console.log('Listening on port 8081'))
 
-try {
-    await mongoose.connect('mongodb+srv://rodrigo:1cWz0gUv86AbcNd5@clusterfastfood.zvkhedb.mongodb.net/?retryWrites=true&w=majority')
-} catch (err) {
-    console.log(err)
-}
+
 
 
 const io = new Server(server)
