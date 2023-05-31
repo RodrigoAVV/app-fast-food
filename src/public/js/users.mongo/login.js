@@ -11,6 +11,7 @@ document.querySelector('form').addEventListener('submit',e=>{
 const llamandoAPI = async (data) => {
 	const options = {
 		method: 'POST',
+		mode: 'cors',
 		headers: {
 			'Content-Type':'application/json'
 		},
@@ -19,6 +20,7 @@ const llamandoAPI = async (data) => {
 	}
 	const respuesta = await fetch(`/api/users/login`,options)
 	const data2 = await respuesta.json()
+	console.log(data2)
 	mje.innerHTML=data2.message
 	
 }

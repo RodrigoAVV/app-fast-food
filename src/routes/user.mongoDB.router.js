@@ -30,8 +30,8 @@ router.get('/create', async(req,res) => {
 router.post('/store', async(req,res,next) => {
     try {
         const { body } = req
-        const {name,lastname1,lastname2,run,email,pass} = body
-        if(_.isNil(body) || !name || !lastname1 || !lastname2  || !run || !email || !pass)
+        const {name,firstname,lastname,run,email,pass} = body
+        if(_.isNil(body) || !name || !firstname || !lastname  || !run || !email || !pass)
             return (res.status(400).json({success:false,message:'Faltan datos por completar'}))
         let exists = await userDao.getOneRun(run)
         if(exists)
@@ -53,23 +53,24 @@ router.post('/login', async(req,res,next) => {
     try {
         const { body } = req
         const {run,pass} = body
+        console.log(run,pass)
         if(_.isNil(body) || !run || !pass)
-            return (res.status(400).json({success:false,message:'Faltan datos por completar'}))
+            return (res.status(400).send({success:false,message:'Faltan datos por completar'}))
         const user = await userDao.login(run,pass)
-        console.log(user)
+        //console.log(user)
         if(!user)
-            return (res.status(400).json({success:false,message:'Error en los datos ingresados'}))
+            return (res.status(400).send({success:false,message:'Error en los datos ingresados'}))
         req.session.user = {
-            name:`${user.name} ${user.lastname1}`,
+            name:`${user.name} ${user.firstname}`,
             run:user.run
         }
-        return res.send({success:true,message:'Login success'})
+        return res.status(200).send({success:true,message:'Sesion creada'})
     } catch (err) {
         next(err)
     }
 })
 
-router.get('/logout',async(res,req,next) => {
+router.get('/logout',(res,req,next) => {
     req.session.destroy(err =>{
         if(err) return res.status(500).send({succes:false,message:'Error'})
         res.redirect('/')

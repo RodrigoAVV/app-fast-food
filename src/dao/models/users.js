@@ -8,11 +8,11 @@ const userSchema = new mongoose.Schema({
         required:true,
         index:true
     },
-    lastname1:{
+    firstname:{
         type:String,
         required:true
     },
-    lastname2:{
+    lastname:{
         type:String,
         required:true
     },
