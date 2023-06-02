@@ -31,8 +31,14 @@
                 <a class="nav-link" href="/api/messages">Mensajes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled">Disabled</a>
+                <a class="nav-link disabled">
+                    {{#if user.run}}
+                        {{user.run}}
+                    {{/if}}
+
+                </a>
             </li>
+
         </ul>
         {{{body}}}
         <footer class="bg-light text-center text-lg-start margin">

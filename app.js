@@ -5,7 +5,10 @@ import cartMongoDBRouter from './src/routes/cart.mongoDB.router.js'
 import messageMongoDBRouter from './src/routes/message.mongoDB.router.js'
 import productFilesRouter from './src/routes/product.files.router.js'
 import productMongoDBRouter from './src/routes/product.mongoDB.router.js'
-import userMongoDBRouter from './src/routes/user.mongoDB.router.js'
+
+import userViewRouter from './src/routes/users.router/views.router.js'
+import userSessionRouter from './src/routes/users.router/sessions.router.js'
+
 import MongoStore from 'connect-mongo'
 
 import errorMiddleware from './src/middlewares/errorMiddleware.js'
@@ -48,23 +51,18 @@ try {
 app.use(session({
     store:MongoStore.create({
         client:mongoose.connection.getClient(),
-        ttl:15
+        ttl:3600
     }),
     secret:'fastfood140',
     resave:true,
     saveUninitialized:true
 }))
 app.subscribe(cookieParser())
-app.use('/api/users',userMongoDBRouter)
+app.use('/',userViewRouter)
+app.use('/api/users',userSessionRouter)
 app.use(errorMiddleware)
 
-
-
-
 const server = app.listen(8081,()=>console.log('Listening on port 8081'))
-
-
-
 
 const io = new Server(server)
 

@@ -27,7 +27,7 @@ router.get('/', async (req,res,next) => {
         }
         //console.log(products)
         
-        res.render(`${folder}/indexDoc`,{products,user,hasPrevPage,hasNextPage,nextPage,prevPage})
+        res.render(`${folder}/indexDoc`,{products,user,hasPrevPage,hasNextPage,nextPage,prevPage},{user:req.session.user})
         //return res.json(data)
     } catch (err) {
         next(err)

@@ -1,31 +1,12 @@
 import {Router} from 'express'
-import User from '../dao/user.mongoDB.dao.js'
 
-import { isValidObjectId, Types } from "mongoose";
-
-const folder = 'users.mongo'
+import User from '../../dao/user.mongoDB.dao.js'
 
 import _ from 'lodash';
 
 const router = Router()
 
 const userDao = new User()
-
-router.get('/', async (req,res,next) => {
-    try {
-        return res.render(`${folder}/index`,{layout:'mainLogin'})
-    } catch (err) {
-        next(err)
-    }
-})
-
-router.get('/create', async(req,res) => {
-    try {
-        return res.render(`${folder}/create`,{layout:'mainLogin'})
-    } catch (err) {
-        next(err)
-    }
-})
 
 router.post('/store', async(req,res,next) => {
     try {
@@ -65,15 +46,10 @@ router.post('/login', async(req,res,next) => {
             run:user.run
         }
         return res.status(200).send({success:true,message:'Sesion creada'})
+        //return res.rendirect('/api/products2')
     } catch (err) {
         next(err)
     }
 })
 
-router.get('/logout',(res,req,next) => {
-    req.session.destroy(err =>{
-        if(err) return res.status(500).send({succes:false,message:'Error'})
-        res.redirect('/')
-    })
-})
 export default router
