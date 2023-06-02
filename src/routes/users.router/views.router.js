@@ -7,7 +7,7 @@ const folder = 'users.mongo'
 const router = Router()
 
 const publicAccess = (req,res,next) => {
-    if(req.session.user) return res.redirect('/')
+    if(req.session.user) return res.redirect('/api/products2')
     next()
 }
 
@@ -24,7 +24,7 @@ router.get('/',publicAccess,  (req,res) => {
     }
 })
 
-router.get('/create', publicAccess, (req,res,next) => {
+router.get('/api/users/create', publicAccess, (req,res,next) => {
     try {
         return res.render(`${folder}/create`,{layout:'mainLogin'})
     } catch (err) {
@@ -32,10 +32,13 @@ router.get('/create', publicAccess, (req,res,next) => {
     }
 })
 
-router.get('/logout',privateAccess,(res,req,next) => {
-    req.session.destroy(err =>{
+router.get('/api/users/logout',(res,req,next) => {
+    try {
+        req.session.destroy(err =>{
         if(err) return res.status(500).send({succes:false,message:'Error'})
-        res.redirect('/')
-    })
+        res.redirect('/api/users/login')
+    })} catch (err) {
+        next(err)
+    } 
 })
 export default router
