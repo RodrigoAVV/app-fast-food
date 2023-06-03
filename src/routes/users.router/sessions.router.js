@@ -45,7 +45,8 @@ router.post('/login', async(req,res,next) => {
             name:`${user.name} ${user.firstname}`,
             run:user.run
         }
-        return res.status(200).send({success:true,message:'Sesion creada'})
+        //console.log(req.session.user)
+        res.status(200).send({success:true,message:'Sesion creada'})
         //return res.rendirect('/api/products2')
     } catch (err) {
         next(err)

@@ -17,19 +17,11 @@ const privateAccess = (req,res,next) => {
 }
 
 router.get('/',publicAccess,  (req,res) => {
-    try {
-        return res.render(`${folder}/index`,{layout:'mainLogin'})
-    } catch (err) {
-        next(err)
-    }
+    return res.render(`${folder}/index`,{layout:'mainLogin'})
 })
 
-router.get('/api/users/create', publicAccess, (req,res,next) => {
-    try {
-        return res.render(`${folder}/create`,{layout:'mainLogin'})
-    } catch (err) {
-        next(err)
-    }
+router.get('/api/users/create', publicAccess, (req,res) => {
+    return res.render(`${folder}/create`,{layout:'mainLogin'})
 })
 
 router.get('/api/users/logout',(res,req,next) => {
