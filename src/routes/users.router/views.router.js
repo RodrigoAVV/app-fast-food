@@ -20,17 +20,9 @@ router.get('/',publicAccess,  (req,res) => {
     return res.render(`${folder}/index`,{layout:'mainLogin'})
 })
 
-router.get('/api/users/create', publicAccess, (req,res) => {
+router.get('/api/users/create', (req,res) => {
     return res.render(`${folder}/create`,{layout:'mainLogin'})
 })
 
-router.get('/api/users/logout',(res,req,next) => {
-    try {
-        req.session.destroy(err =>{
-        if(err) return res.status(500).send({succes:false,message:'Error'})
-        res.redirect('/api/users/login')
-    })} catch (err) {
-        next(err)
-    } 
-})
+
 export default router

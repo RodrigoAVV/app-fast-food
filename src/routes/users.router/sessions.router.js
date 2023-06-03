@@ -53,4 +53,10 @@ router.post('/login', async(req,res,next) => {
     }
 })
 
+router.get('/logout',(res,req) => {
+    req.session.destroy(err =>{
+    if(err) return res.status(500).send({succes:false,message:'Error'})
+        res.redirect('/api/users/login')
+    })
+})
 export default router

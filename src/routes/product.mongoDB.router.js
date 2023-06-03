@@ -14,20 +14,13 @@ const productManager = new Product()
 router.get('/', async (req,res,next) => {
     try {
         const { page = 1,limit = 5, sort = '', query = '' } = req.query
-        const { docs,
-            hasPrevPage,
-            hasNextPage,
-            nextPage,
-            prevPage } = await productManager.filter(limit,page,sort,query)
-            console.log(docs)
-            const products = docs
-        const user= {
+        const { docs,hasNextPage,nextPage,prevPage,hasPrevPage} = await productManager.filter(limit,page,sort,query)
+        const products = docs
+        const user = {
             name:'María',
             role:true
         }
-        //console.log(products)
-        
-        res.render(`${folder}/indexDoc`,{products,user,hasPrevPage,hasNextPage,nextPage,prevPage})
+        res.render(`${folder}/indexDoc`,{products,user,hasPrevPage,hasNextPage,nextPage,prevPage,userSession:req.session.user})
         //return res.json(data)
     } catch (err) {
         next(err)

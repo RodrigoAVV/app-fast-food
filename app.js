@@ -1,5 +1,6 @@
 import express from 'express'
 import mongoose  from 'mongoose'
+import MongoStore from 'connect-mongo'
 import cartFilesRouter from './src/routes/cart.files.router.js'
 import cartMongoDBRouter from './src/routes/cart.mongoDB.router.js'
 import messageMongoDBRouter from './src/routes/message.mongoDB.router.js'
@@ -8,8 +9,6 @@ import productMongoDBRouter from './src/routes/product.mongoDB.router.js'
 
 import userViewRouter from './src/routes/users.router/views.router.js'
 import userSessionRouter from './src/routes/users.router/sessions.router.js'
-
-import MongoStore from 'connect-mongo'
 
 import errorMiddleware from './src/middlewares/errorMiddleware.js'
 import handlebars from 'express-handlebars'
@@ -21,6 +20,22 @@ import session from 'express-session'
 import FileStore from 'session-file-store'
 
 const app = express()
+
+try {
+    await mongoose.connect('mongodb+srv://rodrigo:1cWz0gUv86AbcNd5@clusterfastfood.zvkhedb.mongodb.net/?retryWrites=true&w=majority')
+} catch (err) {
+    console.log(err)
+}
+
+app.use(session({
+    store:MongoStore.create({
+        client:mongoose.connection.getClient(),
+        ttl:3600
+    }),
+    secret:'fastfood140',
+    resave:true,
+    saveUninitialized:true
+}))
 
 //Primero las rutas despues el directorio publico
 app.use(express.static(`${__dirname}/public`))
@@ -41,22 +56,6 @@ app.use('/api/messages',messageMongoDBRouter)
 app.use('/api/products',productFilesRouter)
 app.use('/api/carts',cartFilesRouter)
 
-
-try {
-    await mongoose.connect('mongodb+srv://rodrigo:1cWz0gUv86AbcNd5@clusterfastfood.zvkhedb.mongodb.net/?retryWrites=true&w=majority')
-} catch (err) {
-    console.log(err)
-}
-
-app.use(session({
-    store:MongoStore.create({
-        client:mongoose.connection.getClient(),
-        ttl:3600
-    }),
-    secret:'fastfood140',
-    resave:true,
-    saveUninitialized:true
-}))
 app.subscribe(cookieParser())
 app.use('/',userViewRouter)
 app.use('/api/users',userSessionRouter)
