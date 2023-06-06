@@ -1,4 +1,5 @@
 import {Router} from 'express'
+import passport from 'passport';
 
 import User from '../../dao/user.mongoDB.dao.js'
 
@@ -8,11 +9,21 @@ const router = Router()
 
 const userDao = new User()
 
+router.get('github',passport.authenticate('github',{scope:['user.email']}),async (req,res) => {
+    return res.send({success:true,message:'Usuario registrado'})
+})
+
+router.get('/github-callback',passport.authenticate('github',{failureRedirect:'/login'}),async (req,res)=>{
+    req.session.user = req.user,
+    res.redirect('/')
+})
+
 router.post('/store', async(req,res,next) => {
     try {
         const { body } = req
-        const {name,firstname,lastname,run,email,pass} = body
-        if(_.isNil(body) || !name || !firstname || !lastname  || !run || !email || !pass)
+        const {name,firstname,lastname,run,email,pass,rol} = body
+        console.log(name,firstname,lastname,run,email,pass,rol)
+       if(_.isNil(body) || !name || !firstname || !lastname  || !run || !email || !pass || !rol)
             return (res.status(400).json({success:false,message:'Faltan datos por completar'}))
         let exists = await userDao.getOneRun(run)
         if(exists)

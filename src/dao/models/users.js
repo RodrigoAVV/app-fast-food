@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
     pass:{
         type:String,
         required:true
+    },
+    type:{
+        type:String,
+        requored:true,
+        default:'user'
     }
 })
 
