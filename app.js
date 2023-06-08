@@ -18,6 +18,8 @@ import {Server} from 'socket.io'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import FileStore from 'session-file-store'
+import passport from 'passport'
+import initializePassport from './src/config/passport.config.js'
 
 const app = express()
 
@@ -36,6 +38,10 @@ app.use(session({
     resave:true,
     saveUninitialized:true
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 //Primero las rutas despues el directorio publico
 app.use(express.static(`${__dirname}/public`))

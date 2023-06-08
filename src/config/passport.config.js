@@ -1,10 +1,11 @@
 import passport from 'passport'
-import userModel from '../dao/models/users.js'
 import GitHubStrategy from 'passport-github2'
+import {userModel} from '../dao/models/users.js'
+
 
 const initializePassport = () => {
     passport.use('github',new GitHubStrategy({
-        clientId:'Iv1.8d60101a68e8bca3',
+        clientID:'Iv1.8d60101a68e8bca3',
         clientSecret:'6c4fff7abebe0ac0c4f5314f28228855f3f2a726',
         callbackURL:'htpp://localhost:8081/session/github-callback',
         scope:['user:email']
@@ -31,4 +32,14 @@ const initializePassport = () => {
             return done(err)
         }
     }))
+
+    passport.serializeUser((user,done) => {
+        done(null,user._id)
+    })
+
+    passport.deserializeUser(async (id,done) => {
+        const user = await userModel.findById(id)
+        done(null,user)
+    })
 }
+export default initializePassport

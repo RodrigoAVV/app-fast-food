@@ -9,13 +9,13 @@ const router = Router()
 
 const userDao = new User()
 
-router.get('github',passport.authenticate('github',{scope:['user.email']}),async (req,res) => {
-    return res.send({success:true,message:'Usuario registrado'})
+router.get('/github',passport.authenticate('github',{scope:['user.email']}),async (req,res) => {
+    res.send({success:true,message:'Usuario registrado'})
 })
 
-router.get('/github-callback',passport.authenticate('github',{failureRedirect:'/login'}),async (req,res)=>{
+router.get('/github-callback',passport.authenticate('github',{failureRedirect:'/'}),async (req,res)=>{
     req.session.user = req.user,
-    res.redirect('/')
+    res.redirect('/api/products2')
 })
 
 router.post('/store', async(req,res,next) => {
