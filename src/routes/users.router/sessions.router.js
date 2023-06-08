@@ -10,6 +10,7 @@ const router = Router()
 const userDao = new User()
 
 router.get('/github',passport.authenticate('github',{scope:['user.email']}),async (req,res) => {
+    console.log('github')
     res.send({success:true,message:'Usuario registrado'})
 })
 

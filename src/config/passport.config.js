@@ -2,21 +2,20 @@ import passport from 'passport'
 import GitHubStrategy from 'passport-github2'
 import {userModel} from '../dao/models/users.js'
 
-
 const initializePassport = () => {
     passport.use('github',new GitHubStrategy({
         clientID:'Iv1.8d60101a68e8bca3',
         clientSecret:'6c4fff7abebe0ac0c4f5314f28228855f3f2a726',
-        callbackURL:'htpp://localhost:8081/session/github-callback',
+        callbackURL:'htpp://localhost:8081/api/users/github-callback',
         scope:['user:email']
     },async(accesToken,refreshToken,profile,done) => {
+        console.log(profile)
         try {
             const email = profile.emails[0].value
             const user = await userModel.findOne({email})
             if(!user){
                 const newUser ={
-                    name:profile._json.name,
-                    firstname:'',
+                    firstname:profile._json.name,
                     lastname:'',
                     run:'',
                     email,
