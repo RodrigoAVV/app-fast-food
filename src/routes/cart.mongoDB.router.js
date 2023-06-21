@@ -134,4 +134,23 @@ router.post('/:pid', async(req,res,next) => {
         next(err)
     }
 })
+
+router.post('/create',async(req,res,next) => {
+    try {
+        const products = [
+            
+                {product:ObjectId('645e7a4dd8617300ce644577'),quantity:1},
+                {product:ObjectId('6463b97a6d23955b6a595227'),quantity:2}
+            
+        ]
+        const result = await cartManager.create(products)
+        if(result){
+            return res.send({success:true,message:'Carrito creado'})
+        }else{
+            return res.send({success:false,message:'Error al crear el carrito'})
+        }
+    } catch (err) {
+        next(err)
+    }
+})
 export default router

@@ -3,6 +3,11 @@ import local from 'passport-local'
 import GitHubStrategy from 'passport-github2'
 import {userModel} from '../dao/models/users.js'
 import { createHash,isValidPassword } from '../utils.js'
+import jwt from 'passport-jwt'
+
+const JWTStrategy = jwt.Strategy
+const ExtractJWT = jwt.ExtractJwt
+
 
 const localStrategy = local.Strategy
 
@@ -58,14 +63,34 @@ const initializePassport = () => {
         try {
             const user = await userModel.findOne({run})
             if(!user){
-                console.log('user nomexiste')
+                console.log('user no existe')
                 return done(null,false)
             }
             if(!isValidPassword(user,password))
                 return done(null,false)
+            
             return done(null,user)
         } catch (err) {
             return done(`Error al obtener el usuario: ${err}`)
+        }
+    }))
+
+    const cookieExtractor = req => {
+        let token = null
+        if(req && req.cookies){
+            token = req.cookies['cookieToken']
+        }
+        return token
+    }
+
+    passport.use('jwt',new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey:'CoderHouse39760'
+    },async(jwt_payload,done) => {
+        try {
+            return done(null,jwt_payload.user)
+        } catch (err) {
+            return done(err)
         }
     }))
 

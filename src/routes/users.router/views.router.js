@@ -1,5 +1,5 @@
 import {Router} from 'express'
-
+import { authorization } from '../../utils.js';
 const folder = 'users.mongo'
 
 //import _ from 'lodash';
@@ -20,7 +20,7 @@ router.get('/',  (req,res) => {
     return res.render(`${folder}/index`,{layout:'mainLogin'})
 })
 
-router.get('/api/users/create', (req,res) => {
+router.get('/api/users/create', authorization('user'),(req,res) => {
     return res.render(`${folder}/create`,{layout:'mainLogin'})
 })
 

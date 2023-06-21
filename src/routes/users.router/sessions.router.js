@@ -3,7 +3,7 @@ import {Router} from 'express'
 import User from '../../dao/user.mongoDB.dao.js'
 
 import _ from 'lodash';
-import { createHash, isValidPassword } from '../../utils.js';
+import { passportCall, generateToken, authorization } from '../../utils.js';
 
 import passport from 'passport';
 
@@ -21,7 +21,7 @@ router.get('/github-callback',passport.authenticate('github',{failureRedirect:'/
     res.redirect('/api/products2')
 })
 
-router.post('/store',passport.authenticate('store',{failureRedirect:'failregister'}), async(req,res) => {
+router.post('/store',passport.authenticate('store',{failureRedirect:'failregister'}),authorization('user'), async(req,res) => {
     req.session.user = {
         name: req.user.name,
         run: req.user.run
@@ -36,10 +36,17 @@ router.get('/failregister',async(req,res) => {
 router.post('/login',passport.authenticate('login',{failureRedirect:'faillogin'}) ,async(req,res) => {
     if(!req.user)
         return res.status(400).send({success:false,message:'Credenciales invalidas'})
+    //console.log(req.user)
+    const token = generateToken(req.user)
     req.session.user = {
         name: req.user.name,
-        run: req.user.run
+        run: req.user.run,
+        cart:req.user.cart
     }
+    res.cookie('cookieToken',token,{maxAge:60*60*1000,httpOnly:true}).send({success:true})
+})
+
+router.get('/current',passportCall('jwt'),passport.authenticate('jwt',{session:false}),(req,res) => {
     res.send({success:true,payload:req.user})
 })
 

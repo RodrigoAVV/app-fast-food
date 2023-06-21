@@ -11,7 +11,6 @@ router.get('/', async (req,res,next) => {
     try {
         const { page = 1,limit = 5, sort = '', query = '' } = req.query
         const { docs,hasNextPage,nextPage,prevPage,hasPrevPage} = await productManager.filter(limit,page,sort,query)
-        console.log(prevPage)
         const products = docs
         const user = {
             name:'María',
