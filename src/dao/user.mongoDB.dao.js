@@ -17,10 +17,6 @@ export default class User{
         const user = await userModel.findOne({email})
         return user
     }
-    login = async(run,pass) => {
-        const result = userModel.findOne({run,pass})
-        return result
-    }
     save = async (user) =>{
         const result = await userModel.create(user)
         return result

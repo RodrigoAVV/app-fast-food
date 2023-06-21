@@ -11,8 +11,9 @@ const folder = 'carts.mongo'
 router.get('/', async(req,res,next) => {
     try {
         const carts = await cartManager.getAll()
-
-        res.render(`index`/{success:true,data:carts})
+        //const {} = carts
+        console.log(carts)
+        res.render(`${folder}/index`,{success:true,data:carts})
     } catch (err) {
         next(err)
     }
@@ -22,9 +23,10 @@ router.get('/:cid', async(req,res,next) => {
     try {
         const cid = req.params.cid
         const cart = await cartManager.search(cid)
-        const products = cart.products
+        const {products,user} = cart
+        
         //res.send(JSON.stringify(products))
-        res.render(`${folder}/cartDetail`,{products})
+        res.render(`${folder}/cartDetail`,{products,user})
     } catch (err) {
         next(err)
     }

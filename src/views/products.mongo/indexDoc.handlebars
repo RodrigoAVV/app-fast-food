@@ -14,13 +14,21 @@
         </article>
     {{/each}}
 
-
-    {{#if hasPrevPage}}
-        <a href="/api/products2?page={{nextPage}}&limit=5"><button>siguiente</button></a>
-    {{/if}}
-    {{#if hasPrevPage}}
-        <a href="/api/products2?page={{prevPage}}&limit=5"><button>Anterior</button></a>
-    {{/if}}
 {{/if}}
 </section>
+<nav aria-label="Page navigation example" class="margin">
+    <ul class="pagination justify-content-center">
+        {{#if hasPrevPage}}
+            <li class="page-item">
+                <a class="page-link" href="/api/products2?page={{prevPage}}">Anterior</a>
+            </li>
+        {{/if}}
+
+        {{#if hasNextPage}}
+            <li class="page-item">
+                <a class="page-link" href="/api/products2?page={{nextPage}}">Siguiente</a>
+            </li>
+        {{/if}}
+    </ul>
+</nav>
 <script src="/js/products.mongo/addProduct.js"></script>

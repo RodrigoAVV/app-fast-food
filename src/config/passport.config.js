@@ -1,6 +1,10 @@
 import passport from 'passport'
+import local from 'passport-local'
 import GitHubStrategy from 'passport-github2'
 import {userModel} from '../dao/models/users.js'
+import { createHash,isValidPassword } from '../utils.js'
+
+const localStrategy = local.Strategy
 
 const initializePassport = () => {
     passport.use('github',new GitHubStrategy({
@@ -9,7 +13,6 @@ const initializePassport = () => {
         callbackURL:'htpp://localhost:8081/api/users/github-callback',
         scope:['user:email']
     },async(accesToken,refreshToken,profile,done) => {
-        console.log(profile)
         try {
             const email = profile.emails[0].value
             const user = await userModel.findOne({email})
@@ -32,6 +35,40 @@ const initializePassport = () => {
         }
     }))
 
+    passport.use('store',new localStrategy({passReqToCallback:true, usernameField:'run'},async (req,username,password,done) => {
+        const { body } = req
+        const {name,firstname,lastname,run,email,age} = body
+        try {
+            const user = await userModel.findOne({run:username})
+            if(user){
+                return done(null,false)
+            }
+            const userData = {
+                name,firstname,lastname,run,email,password:createHash(password),age
+            }
+            const result = await userModel.create(userData)
+            return done(null,result)
+        } catch (err) {
+            console.log(err)
+            return done(`Error al obtener el usuario: ${err}`)
+        }
+    }))
+
+    passport.use('login',new localStrategy({usernameField:'run'},async (run,password,done) => {
+        try {
+            const user = await userModel.findOne({run})
+            if(!user){
+                console.log('user nomexiste')
+                return done(null,false)
+            }
+            if(!isValidPassword(user,password))
+                return done(null,false)
+            return done(null,user)
+        } catch (err) {
+            return done(`Error al obtener el usuario: ${err}`)
+        }
+    }))
+
     passport.serializeUser((user,done) => {
         done(null,user._id)
     })
@@ -40,5 +77,6 @@ const initializePassport = () => {
         const user = await userModel.findById(id)
         done(null,user)
     })
+
 }
 export default initializePassport

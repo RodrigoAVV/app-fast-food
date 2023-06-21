@@ -5,7 +5,9 @@ import cartFilesRouter from './src/routes/cart.files.router.js'
 import cartMongoDBRouter from './src/routes/cart.mongoDB.router.js'
 import messageMongoDBRouter from './src/routes/message.mongoDB.router.js'
 import productFilesRouter from './src/routes/product.files.router.js'
-import productMongoDBRouter from './src/routes/product.mongoDB.router.js'
+
+import productViewMongo from './src/routes/product.router/product.views.js'
+import productMongoDBRouter from './src/routes/product.router/product.router.js'
 
 import userViewRouter from './src/routes/users.router/views.router.js'
 import userSessionRouter from './src/routes/users.router/sessions.router.js'
@@ -55,7 +57,9 @@ app.engine('handlebars',handlebars.engine())
 app.set('views',`${__dirname}/views`)
 app.set('view engine','handlebars')
 
+app.use('/api/products2',productViewMongo)
 app.use('/api/products2',productMongoDBRouter)
+
 app.use('/api/cart2',cartMongoDBRouter)
 app.use('/api/messages',messageMongoDBRouter)
 

@@ -20,7 +20,7 @@ const llamandoAPI = async (data) => {
 	}
 	const respuesta = await fetch(`/api/users/login`,options)
 	const data2 = await respuesta.json()
-	data2.success ? window.location.replace('/api/products2') : mje.innerHTML='Error en los datos ingresados'
+	data2.success ? window.location.replace('/api/products2') : mje.innerHTML=data2.message
 	
 	
 }

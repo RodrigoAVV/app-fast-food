@@ -25,15 +25,31 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    pass:{
+    password:{
         type:String,
         required:true
     },
-    type:{
+    role:{
         type:String,
-        requored:true,
+        required:true,
         default:'user'
+    },
+    age:{
+        type:String,
+        required:true
+    },
+    cart:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'carts'
     }
+})
+
+userSchema.pre('find',function(){
+    this.populate('cart')
+})
+
+userSchema.pre('findOne',function(){
+    this.populate('cart')
 })
 
 userSchema.plugin(mongoosePaginate)

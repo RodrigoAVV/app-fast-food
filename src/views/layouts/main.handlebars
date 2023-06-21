@@ -9,7 +9,67 @@
   </head>
   <body>
     <div class="container-fluid">
-        <ul class="nav nav-tabs margin">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/api/products2?limit=10&page=1">Home</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        
+                        
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Productos
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/api/products2/create">Nuevo producto</a></li>
+                            <li><a class="dropdown-item" href="/api/products2/update">Actualizar producto</a></li>
+                            <li><a class="dropdown-item" href="/api/products2/destroy">Eliminar producto</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Carrito
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/api/cart2/6469b713bec8ea8ab16bf422">Listar datos carrito</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="/api/messages">Mensajes</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/api/users/logout">Cerrar sesión</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link disabled">
+                            {{#if userSession.run}}
+                            Bienvenido(a) {{userSession.name}}
+                            {{/if}}
+                            </a>
+                       </li>
+
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+            
+            <a class="btn btn-primary" href="#" role="button">
+                <img src="/img/carrito-compras.png" alt="" class="carrito"> <span class="badge text-bg-secondary">4</span>
+            </a>
+        </nav>
+        <!--<ul class="nav nav-tabs margin">
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/api/products2?limit=10&page=1">Home</a>
             </li>
@@ -21,7 +81,7 @@
                 <li><a class="dropdown-item" href="/api/products2/destroy">Eliminar producto</a></li>
                 </ul>
             </li>
-             <li class="nav-item dropdown">
+            <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Carrito</a>
                 <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/api/cart2/6469b713bec8ea8ab16bf422">Listar datos carrito</a></li>
@@ -41,8 +101,10 @@
 
                 </a>
             </li>
-
-        </ul>
+            <button type="button" class="btn btn-primary">
+            Notifications <span class="badge text-bg-secondary">4</span>
+            </button>
+        </ul> -->
         {{{body}}}
         <footer class="bg-light text-center text-lg-start margin">
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
