@@ -60,7 +60,7 @@ app.set('view engine','handlebars')
 app.use('/api/products2',productViewMongo)
 app.use('/api/products2',productMongoDBRouter)
 
-app.use('/api/cart2',cartMongoDBRouter)
+app.use('/api/carts2',cartMongoDBRouter)
 app.use('/api/messages',messageMongoDBRouter)
 
 app.use('/api/products',productFilesRouter)

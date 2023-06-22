@@ -36,8 +36,7 @@
                             Carrito
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/api/cart2/6469b713bec8ea8ab16bf422">Listar datos carrito</a></li>
-                            <li><a class="dropdown-item" href="/api/cart2/create">Crear carrito</a></li>
+                            <li><a class="dropdown-item" href="/api/carts2/create">Crear carrito</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
@@ -45,10 +44,11 @@
                         <li class="nav-item">
                         <a class="nav-link" href="/api/messages">Mensajes</a>
                         </li>
-
+                        {{#if userSession.run}}
                         <li class="nav-item">
                             <a class="nav-link" href="/api/users/logout">Cerrar sesión</a>
                         </li>
+                        {{/if}}
                         
                         <li class="nav-item">
                             <a class="nav-link disabled">

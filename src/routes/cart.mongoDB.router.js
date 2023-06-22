@@ -1,5 +1,6 @@
 import {Router} from 'express'
 import Cart from '../dao/cart.mongoDB.dao.js'
+import { ObjectId } from 'mongoose';
 
 import { isValidObjectId, Types } from "mongoose";
 
@@ -8,12 +9,25 @@ const cartManager = new Cart()
 
 const folder = 'carts.mongo'
 
+router.get('/create', async(req,res,next) => {
+    try {
+        const products=[
+            {}
+        ]
+        const result = await cartManager.createCart(products)
+        res.status(200).json(result)
+    } catch (err) {
+        next(err)
+    }
+})
+
 router.get('/', async(req,res,next) => {
     try {
         const carts = await cartManager.getAll()
-        //const {} = carts
-        console.log(carts)
-        res.render(`${folder}/index`,{success:true,data:carts})
+        //console.log(carts)
+        //res.render(`${folder}/index`,{success:true,data:carts})
+
+        res.status(200).json({success:true,data:carts})
     } catch (err) {
         next(err)
     }
@@ -129,25 +143,6 @@ router.post('/:pid', async(req,res,next) => {
             }else{
                 return res.send({success:false,message:'Error al eliminar los productos'})
             }
-        }
-    } catch (err) {
-        next(err)
-    }
-})
-
-router.post('/create',async(req,res,next) => {
-    try {
-        const products = [
-            
-                {product:ObjectId('645e7a4dd8617300ce644577'),quantity:1},
-                {product:ObjectId('6463b97a6d23955b6a595227'),quantity:2}
-            
-        ]
-        const result = await cartManager.create(products)
-        if(result){
-            return res.send({success:true,message:'Carrito creado'})
-        }else{
-            return res.send({success:false,message:'Error al crear el carrito'})
         }
     } catch (err) {
         next(err)
