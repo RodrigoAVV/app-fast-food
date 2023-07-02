@@ -2,7 +2,7 @@ import { productModel } from '../dao/models/products.js'
 
 export default class Product{
     constructor(){
-        console.log('user DB')
+        console.log('user DAO')
     }
 
     getAll = async () => {

@@ -4,17 +4,17 @@ import GitHubStrategy from 'passport-github2'
 import {userModel} from '../dao/models/users.js'
 import { createHash,isValidPassword } from '../utils.js'
 import jwt from 'passport-jwt'
+import config from './config.js'
 
 const JWTStrategy = jwt.Strategy
 const ExtractJWT = jwt.ExtractJwt
-
 
 const localStrategy = local.Strategy
 
 const initializePassport = () => {
     passport.use('github',new GitHubStrategy({
-        clientID:'Iv1.8d60101a68e8bca3',
-        clientSecret:'6c4fff7abebe0ac0c4f5314f28228855f3f2a726',
+        clientID:config.clientID,
+        clientSecret:config.clientSecret,
         callbackURL:'htpp://localhost:8081/api/users/github-callback',
         scope:['user:email']
     },async(accesToken,refreshToken,profile,done) => {
@@ -85,7 +85,7 @@ const initializePassport = () => {
 
     passport.use('jwt',new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey:'CoderHouse39760'
+        secretOrKey:config.secretOrKey
     },async(jwt_payload,done) => {
         try {
             return done(null,jwt_payload.user)

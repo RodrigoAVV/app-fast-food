@@ -22,21 +22,19 @@ import session from 'express-session'
 import FileStore from 'session-file-store'
 import passport from 'passport'
 import initializePassport from './src/config/passport.config.js'
+import config from './src/config/config.js'
+console.log(config)
 
 const app = express()
+import './src/dao/dbConfig.js'
 
-try {
-    await mongoose.connect('mongodb+srv://rodrigo:1cWz0gUv86AbcNd5@clusterfastfood.zvkhedb.mongodb.net/?retryWrites=true&w=majority')
-} catch (err) {
-    console.log(err)
-}
 
 app.use(session({
     store:MongoStore.create({
         client:mongoose.connection.getClient(),
         ttl:3600
     }),
-    secret:'fastfood140',
+    secret:config.secret,
     resave:true,
     saveUninitialized:true
 }))
@@ -71,7 +69,7 @@ app.use('/',userViewRouter)
 app.use('/api/users',userSessionRouter)
 app.use(errorMiddleware)
 
-const server = app.listen(8081,()=>console.log('Listening on port 8081'))
+const server = app.listen(config.port,()=>console.log('Listening on port 8081'))
 
 const io = new Server(server)
 
