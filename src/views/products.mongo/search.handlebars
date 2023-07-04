@@ -1,0 +1,13 @@
+<section class="row row-cols-1 row-cols-md-4 g-4">
+    <article class="col">
+        <div class="card h-100">
+            <img src={{data.thumbnail}} alt="" class="card-img-top">
+            <div class="card-body">
+                <p class="card-title">{{data.description}}</p>
+                <p class="card-text">{{data.price}}</p>
+                <a href="#" class="btn btn-primary addProduct" id={{this._id}}>Go somewhere</a>
+            </div>
+        </div>
+    </article>
+</section>
+<script src="/js/products.mongo/searchProduct.js"></script>

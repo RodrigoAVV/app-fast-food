@@ -6,8 +6,7 @@ import cartMongoDBRouter from './src/routes/cart.mongoDB.router.js'
 import messageMongoDBRouter from './src/routes/message.mongoDB.router.js'
 import productFilesRouter from './src/routes/product.files.router.js'
 
-import productViewMongo from './src/routes/product.router/product.views.js'
-import productMongoDBRouter from './src/routes/product.router/product.router.js'
+import productMongoDBRouter from './src/routes/product.router.js'
 
 import userViewRouter from './src/routes/users.router/views.router.js'
 import userSessionRouter from './src/routes/users.router/sessions.router.js'
@@ -23,7 +22,6 @@ import FileStore from 'session-file-store'
 import passport from 'passport'
 import initializePassport from './src/config/passport.config.js'
 import config from './src/config/config.js'
-console.log(config)
 
 const app = express()
 import './src/dao/dbConfig.js'
@@ -55,7 +53,6 @@ app.engine('handlebars',handlebars.engine())
 app.set('views',`${__dirname}/views`)
 app.set('view engine','handlebars')
 
-app.use('/api/products2',productViewMongo)
 app.use('/api/products2',productMongoDBRouter)
 
 app.use('/api/carts2',cartMongoDBRouter)

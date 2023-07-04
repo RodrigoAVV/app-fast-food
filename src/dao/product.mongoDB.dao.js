@@ -2,7 +2,7 @@ import { productModel } from '../dao/models/products.js'
 
 export default class Product{
     constructor(){
-        console.log('user DAO')
+        console.log('product mongo DAO')
     }
 
     getAll = async () => {
@@ -16,7 +16,6 @@ export default class Product{
     }
 
     update = async (id,product) => {
-
         const result = await productModel.updateOne({_id:id},product)
         return result
     }
@@ -45,7 +44,5 @@ export default class Product{
         ])*/
         let products = await productModel.paginate({/*title:query},{price:sort*/},{limit,page,lean:true})
         return products
-        
     }
-    
 }

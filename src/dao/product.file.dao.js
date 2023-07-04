@@ -1,22 +1,11 @@
 import fs from 'fs'
 const path = './src/files/product.json'
+
 export default class ProductService{
     constructor(){
         this.path = path
     }
-    //Revisado
-    addProduct = async (product) => {
-        let data = await fs.promises.readFile(path,'utf-8')
-        if(data.length > 0){
-            let products = JSON.parse(data)
-            products.push(product)
-            await fs.promises.writeFile(path,JSON.stringify(products,null,4),'utf-8')
-            return {
-                success:true,
-                message:'Producto agregado exitosamente'
-            }
-        }
-    } 
+
     //Revisado
     getProducts = async () => {
         let data = await fs.promises.readFile(path,'utf-8')
@@ -32,6 +21,20 @@ export default class ProductService{
             data:productoFormat
         }
     }
+    //Revisado
+    addProduct = async (product) => {
+        let data = await fs.promises.readFile(path,'utf-8')
+        if(data.length > 0){
+            let products = JSON.parse(data)
+            products.push(product)
+            await fs.promises.writeFile(path,JSON.stringify(products,null,4),'utf-8')
+            return {
+                success:true,
+                message:'Producto agregado exitosamente'
+            }
+        }
+    } 
+    
     //Revisado
     getProductsLimit = async (limit) => {
         let data = await fs.promises.readFile(path,'utf-8')

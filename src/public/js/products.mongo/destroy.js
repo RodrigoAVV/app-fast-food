@@ -1,5 +1,5 @@
 const mje = document.querySelector('#mje')
-document.querySelector('form').addEventListener('submit',e=>{
+document.querySelector('#destroyProduct').addEventListener('submit',e=>{
     e.preventDefault()
     const data = Object.fromEntries(
         new FormData(e.target)

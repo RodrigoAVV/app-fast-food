@@ -1,13 +1,12 @@
-const mje = document.querySelector('#mje')
-document.querySelector('#createProduct').addEventListener('submit',e=>{
+document.querySelector('#idProductSearch').addEventListener('submit',e=>{
     e.preventDefault()
     const data = Object.fromEntries(
         new FormData(e.target)
     )
-    llamandoAPI(data)
+	res(data)
 })
 
-const llamandoAPI = async (data) => {
+const res = async (data) => {
 	const options = {
 		method: 'POST',
 		headers: {
@@ -16,8 +15,7 @@ const llamandoAPI = async (data) => {
         body:JSON.stringify(data),
 		cache: 'no-cache'
 	}
-	const respuesta = await fetch(`/api/products2/store`,options)
+	const respuesta = await fetch(`/api/products2/${data.idProduct}`,options)
 	const data2 = await respuesta.json()
-	data2.success ? mje.innerHTML=data2.message : mje.innerHTML='Error'
 	console.log(data2)
 }

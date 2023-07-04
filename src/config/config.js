@@ -12,5 +12,6 @@ export default {
     clientID:process.env.CLIENT_ID,
     clientSecret:process.env.CLIENT_SECRET,
     secretOrKey:process.env.SECRET_OR_KEY,
-    secret:process.env.SECRET_SESSION
+    secret:process.env.SECRET_SESSION,
+    persistence:process.env.PERSISTENCE
 }
