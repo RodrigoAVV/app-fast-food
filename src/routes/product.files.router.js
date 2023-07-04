@@ -1,10 +1,5 @@
 import {Router} from 'express'
 import ProductService from '../dao/product.file.dao.js'
-
-import {
-    getAllProducts
-} from '../controllers/product.file.controller.js'
-
 const router = Router()
 
 import { v4 as uuidv4 } from 'uuid';
@@ -13,9 +8,6 @@ import _ from 'lodash';
 const folder='products.files'
 
 const product = new ProductService()
-
-//Revisado
-router.get('/',getAllProducts)
 
 router.get('/create', (req,res,next) => {
     try {
@@ -30,6 +22,43 @@ router.get('/delete', (req,res,next) => {
         res.render(`${folder}/delete`)
     } catch (err) {
         next(err)
+    }
+})
+//Revisado
+router.get('/',async (req,res,next)=>{
+    try {
+        let user= {
+            name:'María',
+            role:'admin'
+        }
+        let data = []
+        const { limit } = req.query
+        if(limit){
+            data = await product.getProductsLimit(limit)
+            if(data.success){
+                res.render(`${folder}/index`,{
+                    data,
+                    user                    
+                })
+            }else{
+                res.render(`${folder}/index`,{
+                    data                   
+                })
+            }
+        }else{
+            data = await product.getProducts()
+            
+            if(data.success){
+                res.render(`${folder}/index`,{
+                    data,
+                    user                    
+                })
+            }else{
+                res.render(`${folder}/index`,{data})
+            }
+        }
+    } catch (err) {
+        next('Se ha producido un error')
     }
 })
 
