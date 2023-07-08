@@ -1,4 +1,5 @@
 import {Router} from 'express'
+const router = Router()
 import {
     getAllProducts,
     createProduct,
@@ -9,8 +10,6 @@ import {
     deleteProduct,
     searchProduct
 } from '../controllers/product.mongo.controller.js'
-
-const router = Router()
 
 router.get('/',getAllProducts)
 

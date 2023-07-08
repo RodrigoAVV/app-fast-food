@@ -6,5 +6,5 @@ const MongoProductsDao = new mongoProductsDao()
 const FileProductsDao = new filesProductsDao()
 
 export const PRODUCTSDAO = config.persistence === 'files' ? FileProductsDao : MongoProductsDao
-
+console.log(PRODUCTSDAO)
 //export const PRODUCTSDAO = MongoProductsDao

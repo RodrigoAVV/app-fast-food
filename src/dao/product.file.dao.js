@@ -1,95 +1,59 @@
 import fs from 'fs'
 const path = './src/files/product.json'
 
-export default class ProductService{
+export default class Product{
     constructor(){
         this.path = path
     }
 
-    //Revisado
-    getProducts = async () => {
+    getAll = async (limit) => {
         let data = await fs.promises.readFile(path,'utf-8')
-        if(data.length === 0){
-            return {
-                success:false,
-                message:'Productos no disponibles'
-            }
-        }
-        let productoFormat = JSON.parse(data)
-        return {
-            success:true,
-            data:productoFormat
-        }
-    }
-    //Revisado
-    addProduct = async (product) => {
-        let data = await fs.promises.readFile(path,'utf-8')
-        if(data.length > 0){
-            let products = JSON.parse(data)
-            products.push(product)
-            await fs.promises.writeFile(path,JSON.stringify(products,null,4),'utf-8')
-            return {
-                success:true,
-                message:'Producto agregado exitosamente'
-            }
-        }
-    } 
-    
-    //Revisado
-    getProductsLimit = async (limit) => {
-        let data = await fs.promises.readFile(path,'utf-8')
-        if(data.length === 0){
-            return {
-                success:false,
-                message:'Productos no disponibles'
-            }
-        }
         const productoFormat = JSON.parse(data)
         const min = Math.ceil(0)
         const max = Math.floor(productoFormat.length - 1)
         let products = []
-        if(limit<= productoFormat.length){
+        if(limit <= productoFormat.length){
             for(let i = 0 ; i < limit ; i++){
                 let rand = Math.floor(Math.random() * (max - min + 1) + min)
-                //console.log(rand)
+                products.push(productoFormat[rand])
+            }
+        }
+        return products
+    }
+
+    storeProduct = async (product) => {
+        const data = await fs.promises.readFile(path,'utf-8')
+        const products = JSON.parse(data)
+        products.push(product)
+        await fs.promises.writeFile(path,JSON.stringify(products,null,4),'utf-8')  
+    } 
+    
+    productsLimit = async (limit) => {
+        let data = await fs.promises.readFile(path,'utf-8')
+        
+        const productoFormat = JSON.parse(data)
+        const min = Math.ceil(0)
+        const max = Math.floor(productoFormat.length - 1)
+        let products = []
+        if(limit <= productoFormat.length){
+            for(let i = 0 ; i < limit ; i++){
+                let rand = Math.floor(Math.random() * (max - min + 1) + min)
                 products.push(productoFormat[rand])
             }
             return {
                 success: true,
                 data:products
             }
-        }else{
-            return{
-                success:false,
-                message:'Limite supera cantidad de productos'
-            }
-        }
-    }
-    //Probado
-    getProductById = async (id) => {
-        let products = await fs.promises.readFile(path,'utf-8')
-        if(products.length === 0){
-            return{
-                success:false,
-                message:'No hay productos disponibles'
-            }
-        }
-        const productsData = JSON.parse(products)
-        const data = productsData.find(d => d.id === id)
-        if(data){
-            return{
-                success:true,
-                data:data
-            }
-        }else{
-            return{
-                success:false,
-                mesagge:'No se encuentra este producto'
-            }
         }
     }
 
-    //Probado
+    getProductById = async (id) => {
+        let products = await fs.promises.readFile(path,'utf-8')
+        const productsData = JSON.parse(products)
+        const data = productsData.find(d => d.id === id)
+        return data
+    }
+
     async updateProductById(id,data){
         let products = await this.getProducts()
         if(products.length===0) return {success:false,message:'No hay productos disponibles'}
@@ -137,5 +101,10 @@ export default class ProductService{
                 data:`Ocurrio un error al eliminar este producto ${id}`
             }
         }
+    }
+    async getAll(){
+        const data = await fs.promises.readFile(path)
+        const products = JSON.parse(data)
+        return products
     }
 }

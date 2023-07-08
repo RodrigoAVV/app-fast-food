@@ -1,7 +1,7 @@
 import { PRODUCTSDAO } from '../dao/index.js'
 
-const getAllProducts = async (limit,page,sort,query) => {
-    const products = await PRODUCTSDAO.filter(limit,page,sort,query)
+const getAllProducts = async (limit) => {
+    const products = await PRODUCTSDAO.filter(limit)
     return products
 }
 
@@ -23,10 +23,16 @@ const searchProduct = async(id) => {
     return data
 }
 
+const getAll = async() => {
+    const products = await PRODUCTSDAO.getAll()
+    return products
+}
+
 export {
     getAllProducts,
     storeProduct,
     editProduct,
     deleteProduct,
-    searchProduct
+    searchProduct,
+    getAll
 }
