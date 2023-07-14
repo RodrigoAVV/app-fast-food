@@ -1,22 +1,22 @@
 import { PRODUCTSDAO } from '../dao/index.js'
 
 const getAllProducts = async (limit) => {
-    const products = await PRODUCTSDAO.filter(limit)
-    return products
+    const res = await PRODUCTSDAO.filter(limit)
+    return res
 }
 
 const storeProduct = async(body) => {
-    const data = await PRODUCTSDAO.save(body)
-    return data
+    const res = await PRODUCTSDAO.save(body)
+    return res
 }
 const editProduct = async(id,obj) => {
-    const data = await PRODUCTSDAO.update(id,obj)
-    return data
+    const res = await PRODUCTSDAO.update(id,obj)
+    return res
 }
 
 const deleteProduct = async(id) => {
-    const data = await PRODUCTSDAO.delete(id)
-    return data
+    const res = await PRODUCTSDAO.delete(id)
+    return res
 }
 const searchProduct = async(id) => {
     const data = await PRODUCTSDAO.search(id)

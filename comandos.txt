@@ -3,6 +3,9 @@ npm init -y
 npm install express express-handlebars
 npm install dotenv --save
 
+Actualiza paquetes
+https://bernardoayala.com/npm-actualizar-paquetes/
+
 
 
 

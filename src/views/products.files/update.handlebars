@@ -1,0 +1,30 @@
+<h3 id="mjeProductUpdate"></h3>
+<form id="idProductUpdate">
+    <div class="input-group mb-2">
+    <input name="idProduct"  type="text" class="form-control" placeholder="ID del producto" aria-label="Username">
+    <button type="submit" class="btn btn-secondary" id="btnSearchProduct">Buscar producto por ID</button>
+    </div>
+</form>
+
+<form id="dataProductsUpdate" enctype="multipart/form-data">
+    <div class="input-group mb-2">
+    <span class="input-group-text">#</span>
+    <input name="title" type="text" class="form-control" id="title" placeholder="Titulo" aria-label="Username">
+    <span class="input-group-text">#</span>
+    <input name="description" type="text" class="form-control" id="description" placeholder="Descripcion" aria-label="Server">
+    <span class="input-group-text">#</span>
+    <input name="price" type="number" class="form-control" id="price" placeholder="Precio" aria-label="Server">
+    </div>
+
+    <div class="input-group mb-2">
+    <span class="input-group-text">#</span>
+    <input name="thumbnail" type="file" class="form-control" id="thumbnail" aria-label="Username">
+    <span class="input-group-text">#</span>
+    <input name="code" type="text" class="form-control" id="code" placeholder="Código" aria-label="Server">
+    <span class="input-group-text">#</span>
+    <input name="stock" type="number" class="form-control" id="stock" placeholder="Stock" aria-label="Server">
+    </div>
+    <input type="hidden" name="productUpdateId" id="productUpdateId">
+    <button type="submit" class="btn btn-secondary" id="btnUpdateProduct">Actualizar producto</button>
+</form>
+<script src="/js/products.files/update.js"></script>

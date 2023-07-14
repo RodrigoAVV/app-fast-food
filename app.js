@@ -66,7 +66,7 @@ app.use('/',userViewRouter)
 app.use('/api/users',userSessionRouter)
 app.use(errorMiddleware)
 
-const server = app.listen(config.port,()=>console.log('Listening on port 8081'))
+const server = app.listen(config.port,()=>console.log(`Listening on port ${config.port}`))
 
 const io = new Server(server)
 

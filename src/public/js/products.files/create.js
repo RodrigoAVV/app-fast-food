@@ -1,5 +1,5 @@
 const mje = document.querySelector('#mje')
-document.querySelector('form').addEventListener('submit',e=>{
+document.querySelector('#createProductFile').addEventListener('submit',e=>{
     e.preventDefault()
     const data = Object.fromEntries(
         new FormData(e.target)
@@ -19,6 +19,6 @@ const llamandoAPI = async (data) => {
 	}
 	const respuesta = await fetch(`/api/products`,options)
 	const data2 = await respuesta.json()
-	data2.success ? mje.innerHTML=data2.message : mje.innerHTML='Error'
+	data2.success ? mje.innerHTML=data2.message : mje.innerHTML=data2.message
 	console.log(data2)
 }

@@ -5,13 +5,11 @@ import {
     getAllProducts,
     createProduct,
     deleteProduct,
-    destroyQueryProduct,
-    realtimeproducts,
     updateProduct,
     destroyProduct,
     storeProduct,
-    editProduct,
-    searchProduct
+    searchProduct,
+    editProduct
 
 } from '../controllers/product.file.controller.js'
 
@@ -19,20 +17,18 @@ router.get('/',getAllProducts)
 
 router.get('/create',createProduct)
 
-router.get('/delete',deleteProduct)
-
-router.get('/realtimeproducts',realtimeproducts)
-
-router.get('/:pid',searchProduct)
-
 router.post('/',storeProduct)
 
-router.put('/:id',editProduct)
+router.get('/delete',deleteProduct)
 
 router.delete('/:id',destroyProduct)
 
-router.delete('/',destroyQueryProduct)
+//router.get('/realtimeproducts',realtimeproducts)
 
 router.get('/update',updateProduct)
+
+router.get('/:pid',searchProduct)
+
+router.put('/:id',editProduct)
 
 export default router 

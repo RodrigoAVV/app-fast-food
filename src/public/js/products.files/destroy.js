@@ -1,5 +1,5 @@
-const del = document.querySelector('#del')
-document.querySelector('form').addEventListener('submit',e=>{
+const mje = document.querySelector('#mjeDelete')
+document.querySelector('#deleteProductFile').addEventListener('submit',e=>{
     e.preventDefault()
     const data = Object.fromEntries(
         new FormData(e.target)
@@ -14,12 +14,9 @@ const llamandoAPI = async (data) => {
 		headers: {
 			'Content-Type':'application/json'
 		},
-		cache: 'no-cache',
-		redirect: 'follow'
+		cache: 'no-cache'
 	}
 	const respuesta = await fetch(`/api/products/${id}`,options)
 	const data2 = await respuesta.json()
-	data2.success ? del.innerHTML='Producto eliminado' : del.innerHTML='Error'
-	console.log(data2)
-
+	data2.success ? mje.innerHTML=data2.message : mje.innerHTML=data2.message
 }
