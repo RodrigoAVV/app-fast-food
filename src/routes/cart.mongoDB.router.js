@@ -3,6 +3,7 @@ import Cart from '../dao/cart.mongoDB.dao.js'
 import Product from '../dao/product.mongoDB.dao.js'
 import Ticket from '../dao/ticket.mongoDB.dao.js'
 import { v4 as uuidv4 } from 'uuid'
+import {authorization} from '../utils.js'
 
 import { ObjectId } from 'mongoose';
 
@@ -139,7 +140,7 @@ router.delete('/:cid', async(req,res,next) => {
     }
 })
 
-router.post('/:pid', async(req,res,next) => {
+router.post('/:pid',authorization('user'), async(req,res,next) => {
     try {
         const pid = req.params.pid
         const cid = req.session.user.cart._id
@@ -159,9 +160,8 @@ router.post('/:pid', async(req,res,next) => {
                 result = await cartManager.updateOneCart(cid,cart)
             }
             if(result){
-                return res.send({success:true,message:'Producto agregado'})
-            }else{
-                return res.send({success:false,message:'Error al agregar este productos'})
+                //return res.send({success:true,message:'Producto agregado'})
+                console.log('Producto agregado')
             }
         }
     } catch (err) {
