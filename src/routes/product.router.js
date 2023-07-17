@@ -11,19 +11,21 @@ import {
     searchProduct
 } from '../controllers/product.mongo.controller.js'
 
+import {authorization} from '../utils.js'
+
 router.get('/',getAllProducts)
 
-router.get('/create',createProduct)
+router.get('/create',authorization('admin'),createProduct)
 
-router.get('/update',updateProduct)
+router.get('/update',authorization('admin'),updateProduct)
 
-router.get('/destroy',destroyProduct)
+router.get('/destroy',authorization('admin'),destroyProduct)
 
-router.post('/store',storeProduct)
+router.post('/store',authorization('admin'),storeProduct)
 
-router.put('/edit',editProduct)
+router.put('/edit',authorization('admin'),editProduct)
 
-router.delete('/delete',deleteProduct)
+router.delete('/delete',authorization('admin'),deleteProduct)
 
 router.post('/:id',searchProduct)
 

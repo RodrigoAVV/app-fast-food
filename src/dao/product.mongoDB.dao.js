@@ -42,7 +42,7 @@ export default class Product{
                 $limit:limit
             }
         ])*/
-        let products = await productModel.paginate({/*title:query},{price:sort*/},{limit,page,lean:true})
-        return products
+        const docs = await productModel.paginate({/*title:query},{price:sort*/},{limit,page,lean:true})
+        return docs
     }
 }

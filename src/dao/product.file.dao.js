@@ -47,7 +47,7 @@ export default class Product{
             if(product.id == id){
                 return {
                     title:data.title,
-                    descripcion:data.description,
+                    description:data.description,
                     code:data.code,
                     price:data.price,
                     stock:data.stock,

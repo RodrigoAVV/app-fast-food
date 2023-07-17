@@ -13,6 +13,12 @@ export default class User{
         const user = await userModel.findOne({run})
         return user
     }
+
+    getOneId = async (id) => {
+        const user = await userModel.findOne({_id})
+        return user
+    }
+
     getOneEmail = async (email) => {
         const user = await userModel.findOne({email})
         return user

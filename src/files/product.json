@@ -152,31 +152,31 @@
   {
     "title": "fgfgfg",
     "description": "fgffg",
-    "price": "45",
-    "thumbnail": {},
     "code": "45",
+    "price": "45",
     "stock": "45",
+    "thumbnail": {},
     "id": "f8b8633d-46b3-42b7-a2fa-01edb6bb910a",
-    "timestamps": 1684255920235
+    "timestamps": 1689308621694
   },
   {
     "title": "fgfgfg",
     "description": "fgffg",
-    "price": "45",
-    "thumbnail": {},
     "code": "45",
+    "price": "45",
     "stock": "45",
+    "thumbnail": {},
     "id": "cf1f6ac4-b057-407e-8eb6-e6a86f2e1d44",
-    "timestamps": 1684255937125
+    "timestamps": 1689305714430
   },
   {
     "title": "fgfgfg",
-    "descripcion": "fgffg",
+    "description": "ffgfg",
     "code": "45",
-    "price": "55555",
+    "price": "555555",
     "stock": "45",
     "thumbnail": {},
     "id": "3fd118ce-dbac-4f82-8045-18d8b1a3a56c",
-    "timestamps": 1689304300430
+    "timestamps": 1689308800313
   }
 ]

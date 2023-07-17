@@ -94,15 +94,15 @@ const searchProduct = async(req,res) => {
 const editProduct = async(req,res) => {
     const {id} = req.params
     const {body} = req
-    if(_.isNil(id) || _.isNil(body)) return (res.status(400).json({success:false,message:'Req error'}))
+    if(_.isNil(id) || _.isNil(body))
+        return (res.status(400).json({success:false,message:'Req error'}))
     const {title,description,code,price,stock} = body
-    if(!title || !description || !code || !price || !stock) return (res.status(400).json({success:false,message:'Faltan datos para actualizar este producto'}))
+    if(!title || !description || !code || !price || !stock)
+        return (res.status(400).json({success:false,message:'Faltan datos para actualizar este producto'}))
     const data = await editToProductService(id,body)
-    if(data === true) return (res.status(200).json({success:true,message:'Producto actualizado'}))
+    if(data) return (res.status(200).json({success:true,message:'Producto actualizado'}))
+    
 }
-
-
-
 
 export {
     getAllProducts,

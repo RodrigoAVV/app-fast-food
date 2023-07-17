@@ -24,7 +24,7 @@ export default class Cart{
         return result
     }  
 
-    deleteProductCar = async(id,newCart) => {
+    updateOneCart = async(id,newCart) => {
         const result = await cartModel.updateOne({_id:id},newCart)
         return result
     }

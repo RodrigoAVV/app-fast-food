@@ -20,7 +20,7 @@ router.get('/',  (req,res) => {
     return res.render(`${folder}/index`,{layout:'mainLogin'})
 })
 
-router.get('/api/users/create', authorization('user'),(req,res) => {
+router.get('/api/users/create',(req,res) => {
     return res.render(`${folder}/create`,{layout:'mainLogin'})
 })
 

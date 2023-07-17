@@ -23,6 +23,7 @@
                             Productos Mongo
                         </a>
                         <ul class="dropdown-menu">
+                             <li><a class="dropdown-item" href="/api/products2">Listar productos</a></li>
                             <li><a class="dropdown-item" href="/api/products2/create">Nuevo producto</a></li>
                             <li><a class="dropdown-item" href="/api/products2/update">Actualizar producto</a></li>
                             <li><a class="dropdown-item" href="/api/products2/destroy">Eliminar producto</a></li>
@@ -71,14 +72,21 @@
                             {{/if}}
                             </a>
                        </li>
+                        {{#if userSession.run}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/api/carts2/{{userSession.cart._id}}/purchase">Finalizar compra</a>
 
+                          
+
+                        </li>
+                        {{/if}}
                     </ul>
-                    
+                    <!--
                     <form id="idProductSearch" class="d-flex" role="search">
                         <input name="idProduct" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    
+                    -->
                 </div>
             </div>
             

@@ -1,6 +1,6 @@
 import {Router} from 'express'
 
-import User from '../../dao/user.mongoDB.dao.js'
+import UserDTO from '../../dto/userDTO.js';
 
 import _ from 'lodash';
 import { passportCall, generateToken, authorization } from '../../utils.js';
@@ -8,8 +8,6 @@ import { passportCall, generateToken, authorization } from '../../utils.js';
 import passport from 'passport';
 
 const router = Router()
-
-const userDao = new User()
 
 router.get('/github',passport.authenticate('github',{scope:['user.email']}),async (req,res) => {
     console.log('github')
@@ -21,7 +19,7 @@ router.get('/github-callback',passport.authenticate('github',{failureRedirect:'/
     res.redirect('/api/products2')
 })
 
-router.post('/store',passport.authenticate('store',{failureRedirect:'failregister'}),authorization('user'), async(req,res) => {
+router.post('/store',passport.authenticate('store',{failureRedirect:'failregister'}), async(req,res) => {
     req.session.user = {
         name: req.user.name,
         run: req.user.run
@@ -41,13 +39,16 @@ router.post('/login',passport.authenticate('login',{failureRedirect:'faillogin'}
     req.session.user = {
         name: req.user.name,
         run: req.user.run,
-        cart:req.user.cart
+        cart:req.user.cart,
+        id:req.user._id,
+        email:req.user.email
     }
     res.cookie('cookieToken',token,{maxAge:60*60*1000,httpOnly:true}).send({success:true})
 })
 
 router.get('/current',passportCall('jwt'),passport.authenticate('jwt',{session:false}),(req,res) => {
-    res.send({success:true,payload:req.user})
+    const userDTO = new UserDTO(req.user)
+    res.send({success:true,payload:userDTO})
 })
 
 router.get('/faillogin',async(req,res)=>{

@@ -1,11 +1,20 @@
 import {Router} from 'express'
 import Cart from '../dao/cart.mongoDB.dao.js'
+import Product from '../dao/product.mongoDB.dao.js'
+import Ticket from '../dao/ticket.mongoDB.dao.js'
+import { v4 as uuidv4 } from 'uuid'
+
 import { ObjectId } from 'mongoose';
 
 import { isValidObjectId, Types } from "mongoose";
 
 const router = Router()
 const cartManager = new Cart()
+const productManager = new Product()
+const ticketManager = new Ticket()
+
+const folder_ ='ticket.mongoDB'
+
 
 const folder = 'carts.mongo'
 
@@ -133,19 +142,74 @@ router.delete('/:cid', async(req,res,next) => {
 router.post('/:pid', async(req,res,next) => {
     try {
         const pid = req.params.pid
-        const cid = '6469b713bec8ea8ab16bf422'
+        const cid = req.session.user.cart._id
+        
         if(isValidObjectId(pid)){
             let cart = await cartManager.search(cid)
-            cart.products.push({quantity:1,product:pid})
-            const result = await cartManager.deleteProductCar(cid,cart)
+            let newProducts = []
+            let result = false
+            let product = cart.products.find(p=>p.product._id == pid)
+            if(product){
+                product.quantity += 1
+                newProducts = [...cart.products]
+                cart.products = newProducts
+                result = await cartManager.updateOneCart(cid,cart)
+            }else{
+                cart.products.push({quantity:1,product:pid})
+                result = await cartManager.updateOneCart(cid,cart)
+            }
             if(result){
                 return res.send({success:true,message:'Producto agregado'})
             }else{
-                return res.send({success:false,message:'Error al eliminar los productos'})
+                return res.send({success:false,message:'Error al agregar este productos'})
             }
         }
     } catch (err) {
         next(err)
     }
 })
+
+router.get('/:cid/purchase', async(req,res,next) => {
+    try {
+        const cid = req.params.cid
+        const cart = await cartManager.search(cid)
+        const {products} = cart
+        let ticket = {}
+        const compra = products.find(p => p.quantity > p.product.stock)
+        if(!compra){
+            ticket = await generateTicket(products,req)
+        }else{
+            const newProductsList = products.filter(p => p.quantity <= p.product.stock)
+            ticket = await generateTicket(newProductsList,req)
+        }
+        res.render(`${folder_}/ticket`,{ticket,layout:'mainTicket'})
+    } catch (err) {
+        next(err)
+    }
+
+})
+
+const generateTicket = async(products,req) => {
+    let ticketData = {}
+    let uuid = uuidv4()
+    let amount = 0
+    products.forEach(function(value){
+        amount += value.quantity * value.product.price
+    })
+
+    ticketData.code = uuid
+    ticketData.purchase_datetime = Date()
+    ticketData.amount = amount
+    ticketData.purchaser =  req.session.user.email
+
+    const result = ticketManager.createTicket(ticketData)
+
+    for(let i = 0 ; i < products.length ; i++){
+        let product = await productManager.search(products[i].product._id)
+        product.stock -= products[i].quantity
+        let result = productManager.update(products[i].product._id,product)
+    }
+    return ticketData
+}
+
 export default router

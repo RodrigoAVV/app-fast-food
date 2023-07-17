@@ -51,6 +51,7 @@ document.querySelector('#dataProductsUpdate').addEventListener('submit',e=>{
 const editProduct = async (data) => {
 	const options = {
 		method: 'PUT',
+        mode: 'cors',
 		headers: {
 			'Content-Type':'application/json'
 		},
@@ -60,6 +61,6 @@ const editProduct = async (data) => {
     const {productUpdateId} = data
 	const respuesta = await fetch(`/api/products/${productUpdateId}`,options)
 	const data2 = await respuesta.json()
-	data2.success ? mje.innerHTML=data2.data.id : mje.innerHTML=data2.message
-    
+    console.log(data2)
+	data2.success ? mje.innerHTML=data2.message : 'error'
 }
