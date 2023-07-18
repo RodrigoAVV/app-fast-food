@@ -13,4 +13,10 @@ export default class Ticket{
         const res = await ticketModel.create(ticket)
         return res
     }
+
+    delete = async (id) => {
+        const result = await ticketModel.deleteOne({_id:id})
+        return result
+    }
+
 }

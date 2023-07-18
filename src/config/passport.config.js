@@ -2,6 +2,8 @@ import passport from 'passport'
 import local from 'passport-local'
 import GitHubStrategy from 'passport-github2'
 import {userModel} from '../dao/models/users.js'
+import Cart from '../dao/cart.mongoDB.dao.js'
+const cartManager = new Cart()
 import { createHash,isValidPassword } from '../utils.js'
 import jwt from 'passport-jwt'
 import config from './config.js'
@@ -48,8 +50,12 @@ const initializePassport = () => {
             if(user){
                 return done(null,false)
             }
+            const products=[
+                {}
+            ]
+            const cart = await cartManager.createCart(products)
             const userData = {
-                name,firstname,lastname,run,email,password:createHash(password),age
+                name,firstname,lastname,run,email,password:createHash(password),age,cart: { _id: cart[0]._id, products: [] }
             }
             const result = await userModel.create(userData)
             return done(null,result)

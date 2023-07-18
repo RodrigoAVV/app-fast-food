@@ -1,3 +1,4 @@
+{{#if ticket.amount}}
 <section class="row row-cols-1 row-cols-md-4 g-4">
     <div class="card" style="width: 18rem;">
         <img src="https://cdn-icons-png.flaticon.com/128/743/743007.png" class="card-img-top" alt="...">
@@ -8,3 +9,19 @@
         </div>
 </div>
 </section>
+{{/if}}
+
+{{#if ids}}
+    {{#each ids}}
+        <section class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="card" style="width: 18rem;">
+                <img src="https://cdn-icons-png.flaticon.com/128/10473/10473604.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.id}}</h5>
+                    <a href="#" class="btn btn-primary">Rechazado</a>
+                </div>
+            </div>
+        </section>
+{{/each}}
+
+{{/if}}

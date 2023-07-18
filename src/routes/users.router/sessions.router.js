@@ -20,10 +20,6 @@ router.get('/github-callback',passport.authenticate('github',{failureRedirect:'/
 })
 
 router.post('/store',passport.authenticate('store',{failureRedirect:'failregister'}), async(req,res) => {
-    req.session.user = {
-        name: req.user.name,
-        run: req.user.run
-    }
     res.send({success:true,message:'Usuario registrado'})
 })
 
@@ -34,7 +30,6 @@ router.get('/failregister',async(req,res) => {
 router.post('/login',passport.authenticate('login',{failureRedirect:'faillogin'}) ,async(req,res) => {
     if(!req.user)
         return res.status(400).send({success:false,message:'Credenciales invalidas'})
-    //console.log(req.user)
     const token = generateToken(req.user)
     req.session.user = {
         name: req.user.name,

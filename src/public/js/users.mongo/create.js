@@ -20,7 +20,7 @@ const llamandoAPI = async (data) => {
 	const respuesta = await fetch(`/api/users/store`,options)
 	const data2 = await respuesta.json()
 	if(data2.success){
-		window.location.replace('/api/products2')
+		window.location.replace('/')
 	}else{
 		mje.innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
 		<strong>${mje.innerHTML=data2.message}</strong>

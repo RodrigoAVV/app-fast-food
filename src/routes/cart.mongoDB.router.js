@@ -175,14 +175,28 @@ router.get('/:cid/purchase', async(req,res,next) => {
         const cart = await cartManager.search(cid)
         const {products} = cart
         let ticket = {}
+        let ids = []
         const compra = products.find(p => p.quantity > p.product.stock)
         if(!compra){
             ticket = await generateTicket(products,req)
         }else{
             const newProductsList = products.filter(p => p.quantity <= p.product.stock)
+            products.forEach(function(value){
+                if(value.quantity > value.product.stock){
+                    ids.push({id:value.product._id.toString()})
+                }
+            })
             ticket = await generateTicket(newProductsList,req)
+
+            const productsCart = cart.products.filter(p => p.quantity > p.product.stock)
+            console.log(productsCart)
+            cart.products = []
+            for(let i = 0 ; i < productsCart.length ; i++){
+                cart.products.push(productsCart[i])
+            }
+            await cartManager.updateOneCart(cart._id,cart)
         }
-        res.render(`${folder_}/ticket`,{ticket,layout:'mainTicket'})
+        res.render(`${folder_}/ticket`,{ticket,ids,layout:'mainTicket'})
     } catch (err) {
         next(err)
     }
@@ -202,12 +216,12 @@ const generateTicket = async(products,req) => {
     ticketData.amount = amount
     ticketData.purchaser =  req.session.user.email
 
-    const result = ticketManager.createTicket(ticketData)
+    const result = await ticketManager.createTicket(ticketData)
 
     for(let i = 0 ; i < products.length ; i++){
         let product = await productManager.search(products[i].product._id)
         product.stock -= products[i].quantity
-        let result = productManager.update(products[i].product._id,product)
+        let result = await productManager.update(products[i].product._id,product)
     }
     return ticketData
 }
