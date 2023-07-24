@@ -24,7 +24,7 @@ router.get('/update',authorization('admin'),updateProduct)
 
 router.get('/destroy',authorization('admin'),destroyProduct)
 
-router.post('/store',/*authorization('admin'),*/storeProduct)
+router.post('/store',authorization('admin'),storeProduct)
 
 router.put('/edit',authorization('admin'),editProduct)
 

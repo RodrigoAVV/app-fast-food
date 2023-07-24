@@ -48,4 +48,12 @@ export default class Ticket{
         })
         return cant
     }
+
+    getCantProducts = async(products) => {
+        let cant = 0
+        products.forEach(function(value){
+            cant += value.quantity
+        })
+        return cant
+    }
 }

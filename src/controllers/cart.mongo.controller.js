@@ -3,7 +3,6 @@ import Cart from '../dao/cart.mongoDB.dao.js'
 import Product from '../dao/product.mongoDB.dao.js'
 import Ticket from '../dao/ticket.mongoDB.dao.js'
 
-const cartManager = new Cart()
 const productManager = new Product()
 const ticketManager = new Ticket()
 const ticketHelper = new ticketClass()
@@ -122,12 +121,12 @@ const storeCart = async(req,res) => {
             result = await updateCartProducts(cid,cart)
         }
         if(result){
-            console.log('Producto agregado')
             const cart = await getToCartService(cid)
             const {products} = cart
-            const cant = ticketHelper.getCantProductCart(products)
-            return res.send({success:true,cant})
+            const cant = await ticketHelper.getCantProducts(products)
+            return res.send({success:true,cant,message:'Producto agregado'})
         }
+        
     }
 }
 
