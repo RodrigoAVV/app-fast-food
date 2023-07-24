@@ -21,5 +21,6 @@ const llamandoAPI = async (idProduct) => {
 	}
 	const respuesta = await fetch(`/api/carts2/${idProduct}`,options)
 	const data2 = await respuesta.json()
+	console.log(data2)
 	data2.success ? mje.innerHTML=data2.message : mje.innerHTML=data2.message
 }

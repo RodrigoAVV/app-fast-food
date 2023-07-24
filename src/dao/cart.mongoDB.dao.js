@@ -4,27 +4,17 @@ export default class Cart{
         console.log('car DB')
     }
     
-    getAll = async () => {
-        const carts = await cartModel.find().lean()
-        return carts
-    }
-    
-    createCart = async (cart) => {
-        const res = await cartModel.create(cart)
-        return res
-    }
-
-    search = async(id) => {
-        const result = await cartModel.findOne({_id:id}).lean()
+    createCart = async (products) => {
+        const result = await cartModel.create(products)
         return result
     }
 
-    search2 = async(id) => {
+    search = async(id) => {
         const result = await cartModel.findOne({_id:id})
         return result
     }  
 
-    updateOneCart = async(id,newCart) => {
+    updateCart = async(id,newCart) => {
         const result = await cartModel.updateOne({_id:id},newCart)
         return result
     }

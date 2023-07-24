@@ -11,7 +11,9 @@ import productMongoDBRouter from './src/routes/product.router.js'
 import userViewRouter from './src/routes/users.router/views.router.js'
 import userSessionRouter from './src/routes/users.router/sessions.router.js'
 
-import errorMiddleware from './src/middlewares/errorMiddleware.js'
+import productFaker from './src/routes/products.faker.js'
+
+import errorHandler from './src/middlewares/index.js'
 import handlebars from 'express-handlebars'
 import __dirname from './src/utils.js'
 import {Server} from 'socket.io'
@@ -46,6 +48,8 @@ app.use(express.static(`${__dirname}/public`))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+app.use('/',productFaker)
+
 const fileStorage = FileStore(session)
 app.use(cookieParser())
 
@@ -64,7 +68,7 @@ app.use('/api/carts',cartFilesRouter)
 app.subscribe(cookieParser())
 app.use('/',userViewRouter)
 app.use('/api/users',userSessionRouter)
-app.use(errorMiddleware)
+app.use(errorHandler)
 
 const server = app.listen(config.port,()=>console.log(`Listening on port ${config.port}`))
 

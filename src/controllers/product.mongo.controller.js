@@ -1,3 +1,6 @@
+import CustomError from '../middlewares/errors/CustomError.js'
+import EErrors from '../middlewares/errors/enums.js'
+import {generateProductInfo} from '../middlewares/errors/info.js'
 import {
     getAllProducts as getToProductsService,
     storeProduct as storeToProductService,
@@ -7,6 +10,7 @@ import {
 } from '../services/product.mongo.service.js'
 
 import {authorization} from '../utils.js'
+
 
 import _ from 'lodash';
 
@@ -42,8 +46,17 @@ const destroyProduct = async(req,res) => {
 const storeProduct = async(req,res) => {
     const { body } = req
     const {title,description,price,thumbnail,code,stock} = body
-    if(_.isNil(body) || !title || !description || !price  || !thumbnail || !code || !stock)
-        return (res.status(400).json({success:false,message:'Faltan datos por completar'}))
+    if(_.isNil(body) || !title || !description || !price  || !thumbnail || !code || !stock){
+        throw CustomError.createError({
+            name: 'ProductError',
+            cause: generateProductInfo({title,description,price,thumbnail,code,stock}),
+            message: 'Error al tratar de crear el usuario',
+            code: EErrors.INVALID_TYPE_ERROR
+        })
+        //return (res.status(400).json({success:false,message:'Faltan datos por completar'}))
+
+    }
+
     Object.assign(body,{
         timestamps:Date.now()
     })

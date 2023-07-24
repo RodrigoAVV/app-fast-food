@@ -1,5 +1,5 @@
 import {Router} from 'express'
-const router = Router()
+
 import {
     getAllProducts,
     createProduct,
@@ -10,6 +10,9 @@ import {
     deleteProduct,
     searchProduct
 } from '../controllers/product.mongo.controller.js'
+import toAsyncRouter from 'async-express-decorator'
+
+const router = toAsyncRouter(Router())
 
 import {authorization} from '../utils.js'
 
@@ -21,7 +24,7 @@ router.get('/update',authorization('admin'),updateProduct)
 
 router.get('/destroy',authorization('admin'),destroyProduct)
 
-router.post('/store',authorization('admin'),storeProduct)
+router.post('/store',/*authorization('admin'),*/storeProduct)
 
 router.put('/edit',authorization('admin'),editProduct)
 
