@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from 'uuid'
-export default class Ticket{
-    productNoStock = async(products) => {
+export default class Helper{
+    static productNoStock = async(products) => {
         const compra = products.filter(p => p.quantity > p.product.stock)
         return compra
     }
 
-    generateTicket = async(products,user) => {
+    static generateTicket = async(products,user) => {
         let amount = 0
         products.forEach(function(value){
             amount += value.quantity * value.product.price
@@ -18,7 +18,7 @@ export default class Ticket{
         return ticketData
     }
 
-    updateCantProduct = async(products,productManager) => {
+    static updateCantProduct = async(products,productManager) => {
         let result = {}
         for(let i = 0 ; i < products.length ; i++){
             let product = await productManager.search(products[i].product._id)
@@ -28,12 +28,12 @@ export default class Ticket{
         return result
     }
 
-    getProductsStock = async(products) => {
+    static getProductsStock = async(products) => {
         const newProducts = products.filter(p => p.quantity <= p.product.stock)
         return newProducts
     }
     
-    getIdProducts = async(products) => {
+    static getIdProducts = async(products) => {
         const ids = []
         products.forEach(function(value){
             ids.push({id:value.product._id.toString()})
@@ -41,7 +41,7 @@ export default class Ticket{
         return ids
     }
 
-    getCantProductCart = async(products) => {
+    static getCantProductCart = async(products) => {
         let cant
         products.forEach(function(value){
             cant += value.product.price
@@ -49,7 +49,7 @@ export default class Ticket{
         return cant
     }
 
-    getCantProducts = async(products) => {
+    static getCantProducts = async(products) => {
         let cant = 0
         products.forEach(function(value){
             cant += value.quantity

@@ -1,10 +1,6 @@
 import { productModel } from '../dao/models/products.js'
 
 export default class Product{
-    constructor(){
-        console.log('product mongo DAO')
-    }
-
     getAll = async () => {
         const products = await productModel.find().lean()
         return products

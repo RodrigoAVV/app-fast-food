@@ -1,7 +1,8 @@
-import ticketClass from '../helpers.js'
 import CustomError from '../middlewares/errors/CustomError.js'
 import EErrors from '../middlewares/errors/enums.js'
 import {generateProductInfo} from '../middlewares/errors/info.js'
+import Helper from '../helpers.js'
+import logger from '../loggers/logger.js'
 import {
     getAllProducts as getToProductsService,
     storeProduct as storeToProductService,
@@ -14,11 +15,9 @@ import {
     getCart as getToCartService
 } from '../services/cart.mongo.service.js'
 
-const ticketHelper = new ticketClass()
 
 import {authorization} from '../utils.js'
 
-import _ from 'lodash';
 
 const folder = 'products.mongo'
 
@@ -27,19 +26,20 @@ import { isValidObjectId, Types } from "mongoose";
 const getAllProducts = async(req,res) => {
     const { page = 1,limit = 5, sort = '', query = '' } = req.query
     const { docs,hasNextPage,nextPage,prevPage,hasPrevPage} = await getToProductsService(limit,page,sort,query)
-   
     const products = docs
-    const user = {
-        name:'María',
-        role:true
-    }
-    /*Revisar para implementar
     const cart = await getToCartService(req.session.user.cart)
-    const products2 = cart.products
-    const cant = await ticketHelper.getCantProducts(products2)
-*/
-    res.render(`${folder}/indexDoc`,{
-        products,user,hasPrevPage,hasNextPage,nextPage,prevPage,userSession:req.session.user})
+    const cant = await Helper.getCantProducts(cart.products)
+
+    logger.fatal('Prueba fatal')
+    logger.error('Prueba error')
+    logger.warning('Prueba warning')
+    logger.info('Prueba info')
+    logger.http('Prueba http')
+    logger.debug('Prueba debug')
+
+
+    res.render(`${folder}/indexDoc`,
+    {products,hasPrevPage,hasNextPage,nextPage,prevPage,userSession:req.session.user,cant})
 }
 
 const createProduct = async(req,res) => {

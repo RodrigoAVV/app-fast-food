@@ -1,9 +1,5 @@
 import { ticketModel } from './models/ticket.js'
 export default class Ticket{
-    constructor(){
-        console.log('ticket DB')
-    }
-    
     getAll = async () => {
         const tickets = await ticketModel.find().lean()
         return tickets

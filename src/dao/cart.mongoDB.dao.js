@@ -1,9 +1,5 @@
 import { cartModel } from './models/carts.js'
 export default class Cart{
-    constructor(){
-        console.log('car DB')
-    }
-    
     createCart = async (products) => {
         const result = await cartModel.create(products)
         return result

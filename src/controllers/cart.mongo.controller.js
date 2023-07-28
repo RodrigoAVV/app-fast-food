@@ -1,11 +1,10 @@
-import ticketClass from '../helpers.js'
+import Helper from '../helpers.js'
 import Cart from '../dao/cart.mongoDB.dao.js'
 import Product from '../dao/product.mongoDB.dao.js'
 import Ticket from '../dao/ticket.mongoDB.dao.js'
 
 const productManager = new Product()
 const ticketManager = new Ticket()
-const ticketHelper = new ticketClass()
 const folder_ ='ticket.mongoDB'
 
 const folder = 'carts.mongo'
@@ -123,7 +122,7 @@ const storeCart = async(req,res) => {
         if(result){
             const cart = await getToCartService(cid)
             const {products} = cart
-            const cant = await ticketHelper.getCantProducts(products)
+            const cant = await Helper.getCantProducts(products)
             return res.send({success:true,cant,message:'Producto agregado'})
         }
         
@@ -137,22 +136,22 @@ const generatePurchase = async(req,res) => {
     let ticket = {}
     let ids = []
     const user = req.session.user.email
-    const productsNoStock = await ticketHelper.productNoStock(products)//No hay productos en stock
-    const productsInStock = await ticketHelper.getProductsStock(products)
+    const productsNoStock = await Helper.productNoStock(products)//No hay productos en stock
+    const productsInStock = await Helper.getProductsStock(products)
 
     const newCart = cart
     newCart.products = productsNoStock
 
     if(productsNoStock.length == 0){
-        ticket = await ticketHelper.generateTicket(productsInStock,user) 
+        ticket = await Helper.generateTicket(productsInStock,user) 
         const result = await ticketManager.createTicket(ticket)
        if(result){
-           const result2 = await ticketHelper.updateCantProduct(productsInStock,productManager)
+           const result2 = await Helper.updateCantProduct(productsInStock,productManager)
            const result3 = await updateCartProducts(newCart._id,newCart)
         }
     }else{
-        ids = ticketHelper.getIdProducts(productsNoStock)//id de productos sin stock
-        ticket = await ticketHelper.generateTicket(productsInStock,user)//Genera ticket con productos en stock
+        ids = Helper.getIdProducts(productsNoStock)//id de productos sin stock
+        ticket = await Helper.generateTicket(productsInStock,user)//Genera ticket con productos en stock
         await updateCartProducts(newCart._id,newCart)
     }
     res.render(`${folder_}/ticket`,{ticket,ids,layout:'mainTicket'})

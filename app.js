@@ -28,7 +28,6 @@ import config from './src/config/config.js'
 const app = express()
 import './src/dao/dbConfig.js'
 
-
 app.use(session({
     store:MongoStore.create({
         client:mongoose.connection.getClient(),
@@ -69,6 +68,7 @@ app.subscribe(cookieParser())
 app.use('/',userViewRouter)
 app.use('/api/users',userSessionRouter)
 app.use(errorHandler)
+
 
 const server = app.listen(config.port,()=>console.log(`Listening on port ${config.port}`))
 

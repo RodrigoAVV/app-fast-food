@@ -1,9 +1,5 @@
 import { messageModel } from '../dao/models/messages.js'
 export default class Message{
-    constructor(){
-        console.log('message DB')
-    }
-
     getAll = async () => {
         const messages = await messageModel.find()
         return messages.map(message => message.toObject())
