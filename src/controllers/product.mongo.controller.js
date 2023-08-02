@@ -2,7 +2,7 @@ import CustomError from '../middlewares/errors/CustomError.js'
 import EErrors from '../middlewares/errors/enums.js'
 import {generateProductInfo} from '../middlewares/errors/info.js'
 import Helper from '../helpers.js'
-import logger from '../loggers/logger.js'
+import {getLogger} from '../loggers/logger.js'
 import {
     getAllProducts as getToProductsService,
     storeProduct as storeToProductService,
@@ -30,12 +30,12 @@ const getAllProducts = async(req,res) => {
     const cart = await getToCartService(req.session.user.cart)
     const cant = await Helper.getCantProducts(cart.products)
 
-    logger.fatal('Prueba fatal')
-    logger.error('Prueba error')
-    logger.warning('Prueba warning')
-    logger.info('Prueba info')
-    logger.http('Prueba http')
-    logger.debug('Prueba debug')
+    getLogger().fatal('Prueba fatal')
+    getLogger().error('Prueba error')
+    getLogger().warning('Prueba warning')
+    getLogger().info('Prueba info')
+    getLogger().http('Prueba http')
+    getLogger().debug('Prueba debug')
 
 
     res.render(`${folder}/indexDoc`,

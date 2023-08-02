@@ -24,6 +24,7 @@ import FileStore from 'session-file-store'
 import passport from 'passport'
 import initializePassport from './src/config/passport.config.js'
 import config from './src/config/config.js'
+import { getLogger } from './src/loggers/logger.js'
 
 const app = express()
 import './src/dao/dbConfig.js'
@@ -70,7 +71,7 @@ app.use('/api/users',userSessionRouter)
 app.use(errorHandler)
 
 
-const server = app.listen(config.port,()=>console.log(`Listening on port ${config.port}`))
+const server = app.listen(config.port,()=>getLogger().info(`Listening on port ${config.port}`))
 
 const io = new Server(server)
 

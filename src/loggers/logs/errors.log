@@ -2,3 +2,7 @@
 {"level":"error","message":"Prueba error"}
 {"level":"warning","message":"Prueba warning"}
 {"level":"info","message":"Prueba info"}
+{"level":"fatal","message":"Prueba fatal"}
+{"level":"error","message":"Prueba error"}
+{"level":"warning","message":"Prueba warning"}
+{"level":"info","message":"Prueba info"}

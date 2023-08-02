@@ -49,4 +49,8 @@ if(ENVIRONMENT === 'developer'){
     })
 }
 
+export const getLogger = () =>{
+    return logger
+}
+
 export default logger
