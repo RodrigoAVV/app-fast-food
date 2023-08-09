@@ -23,4 +23,9 @@ export default class User{
         const result = await userModel.create(user)
         return result
     }
+
+    update = async (email,user) => {
+        const result = await userModel.updateOne({email:email},user)
+        return result
+    }
 }

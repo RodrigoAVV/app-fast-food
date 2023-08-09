@@ -1,4 +1,4 @@
-const mje = document.querySelector('#mje')
+const mje = document.querySelector('#mjeReset')
 document.querySelector('#formReset').addEventListener('submit',e=>{
     e.preventDefault()
     const data = Object.fromEntries(
@@ -8,24 +8,24 @@ document.querySelector('#formReset').addEventListener('submit',e=>{
 })
 
 const llamandoAPI = async (data) => {
+	const storage = localStorage.getItem('access_token')
+    data.token = storage
 	const options = {
 		method: 'POST',
 		headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
 		},
+
         body:JSON.stringify(data),
 		cache: 'no-cache'
 	}
 	const respuesta = await fetch(`/api/users/resetpass`,options)
 	const data2 = await respuesta.json()
-	console.log(data2)
-    /*if(data2.success){
-		window.location.replace('/')
-	}else{
-		mje.innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    if(data2.success){
+		mje.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
 		<strong>${mje.innerHTML=data2.message}</strong>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   		</div>`
-	}*/
+	}
 }

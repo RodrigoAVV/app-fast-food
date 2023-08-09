@@ -4,6 +4,7 @@ import UserDTO from '../../dto/userDTO.js';
 import nodemailer from 'nodemailer'
 import UserModel from '../../dao/user.mongoDB.dao.js'
 import userDTO from '../../dto/userDTO.js'
+import { verifyToken,isValidPassword,createHash } from '../../utils.js';
 
 const UserDAO = new UserModel()
 
@@ -76,11 +77,11 @@ export const transporter = nodemailer.createTransport({
 router.post('/reset',async(req,res) => {
     const {email} = req.body
     const objUser = await UserDAO.getOneEmail(email)
-    const user = new UserDTO(objUser)
-    const accessToken = generateToken(user)
+    //const user = new UserDTO(objUser)
+    const accessToken = generateToken(objUser)
     await transporter.sendMail({
         from: 'Fast food',
-        to: user.email,
+        to: objUser.email,
         subject: 'Reestablecer contraseña',
         html: "<p><a href='http://localhost:8081/api/users/resetpassword/"+accessToken+"'>Reestablecer contraseña</a></p>"
     })
@@ -93,10 +94,15 @@ router.get('/current',authToken,(req,res) => {
 
 router.post('/resetpass',async(req,res) => {
     const body = req.body
-    console.log(body)
+    if(body.pass1 != body.pass2)
+        return res.send({success:false,message:'Las contraseñas deben ser iguales'})
+    const tokenUser = verifyToken(body.token)
+    const user =  await UserDAO.getOneEmail(tokenUser.user.email)
+    user.password = createHash(body.pass1)
+    const result = UserDAO.update(user.email,user)
+    if(result)
+        return res.send({success:true,message:'Contraseña actualizada'})
 })
-
-
 
 
 export default router

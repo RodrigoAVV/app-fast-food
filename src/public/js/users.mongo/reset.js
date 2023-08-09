@@ -19,6 +19,10 @@ const llamandoAPI = async (data) => {
 	}
 	const respuesta = await fetch(`/api/users/reset`,options)
 	const data2 = await respuesta.json()
+	const { access_token } = data2;
+	if (access_token) {
+		localStorage.setItem("access_token", access_token);
+	}
 	if(data2.success){
 		//window.location.replace('/')
 		mje.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
