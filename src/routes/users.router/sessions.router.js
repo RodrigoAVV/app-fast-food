@@ -1,9 +1,14 @@
 import {Router} from 'express'
 
 import UserDTO from '../../dto/userDTO.js';
+import nodemailer from 'nodemailer'
+import UserModel from '../../dao/user.mongoDB.dao.js'
+import userDTO from '../../dto/userDTO.js'
+
+const UserDAO = new UserModel()
 
 import _ from 'lodash';
-import { passportCall, generateToken, authorization } from '../../utils.js';
+import { passportCall, generateToken, authToken } from '../../utils.js';
 
 import passport from 'passport';
 
@@ -57,4 +62,41 @@ router.get('/logout',(req,res) => {
         res.redirect('/')
     })
 })
+
+export const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth: {
+        user: 'rodrigo.vidal.vera@gmail.com',
+        pass: 'lnsfmesdshimifut'
+    }
+})
+
+//Al enviar el email buscar el usuario, genera el tocken y envia el email
+router.post('/reset',async(req,res) => {
+    const {email} = req.body
+    const objUser = await UserDAO.getOneEmail(email)
+    const user = new UserDTO(objUser)
+    const accessToken = generateToken(user)
+    await transporter.sendMail({
+        from: 'Fast food',
+        to: user.email,
+        subject: 'Reestablecer contraseña',
+        html: "<p><a href='http://localhost:8081/api/users/resetpassword/"+accessToken+"'>Reestablecer contraseña</a></p>"
+    })
+    res.send({success:true,access_token:accessToken})
+})
+
+router.get('/current',authToken,(req,res) => {
+    res.send({success:true,payload:req.user})
+})
+
+router.post('/resetpass',async(req,res) => {
+    const body = req.body
+    console.log(body)
+})
+
+
+
+
 export default router

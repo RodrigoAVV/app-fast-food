@@ -1,8 +1,7 @@
 import Helper from '../helpers.js'
-import Cart from '../dao/cart.mongoDB.dao.js'
 import Product from '../dao/product.mongoDB.dao.js'
 import Ticket from '../dao/ticket.mongoDB.dao.js'
-
+import nodemailer from 'nodemailer'
 const productManager = new Product()
 const ticketManager = new Ticket()
 const folder_ ='ticket.mongoDB'
@@ -129,6 +128,15 @@ const storeCart = async(req,res) => {
     }
 }
 
+export const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth: {
+        user: 'rodrigo.vidal.vera@gmail.com',
+        pass: 'lnsfmesdshimifut'
+    }
+})
+
 const generatePurchase = async(req,res) => {
     const cid = req.params.cid
     const cart = await getToCartService(cid)
@@ -154,6 +162,12 @@ const generatePurchase = async(req,res) => {
         ticket = await Helper.generateTicket(productsInStock,user)//Genera ticket con productos en stock
         await updateCartProducts(newCart._id,newCart)
     }
+    await transporter.sendMail({
+        from: 'Fast food',
+        to: user,
+        subject: 'Confirmación de pedido',
+        html: '<div> <h2>Recibimos tu pedido</h2> </div>'
+    })
     res.render(`${folder_}/ticket`,{ticket,ids,layout:'mainTicket'})
 }
 

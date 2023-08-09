@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { authorization } from '../../utils.js';
+import { authorization,verifyToken } from '../../utils.js';
 const folder = 'users.mongo'
 
 //import _ from 'lodash';
@@ -24,5 +24,18 @@ router.get('/api/users/create',(req,res) => {
     return res.render(`${folder}/create`,{layout:'mainLogin'})
 })
 
+router.get('/api/users/reset',(req,res) => {
+   return res.render(`${folder}/reset`,{layout:'mainReset'})
+})
+
+router.get('/api/users/resetpassword/:token',(req,res) => {
+    const token = req.params.token
+    const tokenUser = verifyToken(token)
+    if(tokenUser){
+        res.render(`${folder}/newpassword`,{layout:'mainReset'})
+    }else{
+        res.redirect('/api/users/reset')
+    }
+})
 
 export default router

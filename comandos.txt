@@ -19,5 +19,4 @@ https://github.com/javiaps94/coder-39760
 user: rodrigo
 password: 1cWz0gUv86AbcNd5
 
-http://localhost:8081/mockingproducts
-http://localhost:8081/api/products2/create
+lnsfmesdshimifut

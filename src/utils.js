@@ -4,24 +4,35 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
 
-const PRIVATE_KET ='CoderHouse39760'
+
+const PRIVATE_KEY ='CoderHouse39760'
 
 export const generateToken = (user) => {
-    const token = jwt.sign({user},PRIVATE_KET,{expiresIn:'24h'})
-    return token
+    const token = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '1h' });
+    return token;
+};
+
+export const authToken = (req, res, next) => {
+    const authToken = req.headers.authorization;
+    
+    if(!authToken) return res.status(401).send({error: 'Not authenticated'});
+
+    const token = authToken.split(' ')[1];
+
+    jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+        if (error) return res.status(403).send({error: 'Not authorized'});
+        req.user = credentials.user;
+        next();
+    })
 }
 
-export const authToken = (req,res,next) =>{
-    const authToken = req.headers.authorization
-    if(!authToken)
-        return res.status(401).send({success:false,message:'No autorizado'})
-    const token = authToken.split(' ')[1]
-    jwt.verify(token,PRIVATE_KET,(err,credentials) => {
-        if(err)
-            return res.status(403).send({success:false,message:'No autorizado'})
-        req.user = credentials.user
-        next()
-    })
+export const verifyToken = (token) => {
+    try {
+        const decoded = jwt.verify(token, PRIVATE_KEY);
+        return decoded
+      } catch(err) {
+        // err
+      }
 }
 
 export const passportCall = (strategy) => {
