@@ -94,14 +94,26 @@ router.get('/current',authToken,(req,res) => {
 
 router.post('/resetpass',async(req,res) => {
     const body = req.body
-    if(body.pass1 != body.pass2)
-        return res.send({success:false,message:'Las contraseñas deben ser iguales'})
     const tokenUser = verifyToken(body.token)
-    const user =  await UserDAO.getOneEmail(tokenUser.user.email)
-    user.password = createHash(body.pass1)
-    const result = UserDAO.update(user.email,user)
-    if(result)
-        return res.send({success:true,message:'Contraseña actualizada'})
+    if(tokenUser){
+        if(body.pass1 != body.pass2)
+            return res.send({success:false,message:'Las contraseñas deben ser iguales'})
+        const user =  await UserDAO.getOneEmail(tokenUser.user.email)
+        if(isValidPassword(user,body.pass1)){
+            return res.send({success:false,message:'La contraseña deben ser diferente a la anterior'})
+        }
+        user.password = createHash(body.pass1)
+        const result = UserDAO.update(user.email,user)
+        if(result)
+            return res.send({success:true,message:'Contraseña actualizada'})
+    }else{
+        return res.send({success:false,message:'Token ya fue utilizado o ha expirado'})
+    }
+
+
+    
+    
+    
 })
 
 

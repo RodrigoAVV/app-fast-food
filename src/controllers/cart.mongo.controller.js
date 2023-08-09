@@ -1,4 +1,9 @@
-import Helper from '../helpers.js'
+import {getCantProducts,
+    productNoStock,
+    getProductsStock,
+    updateCantProduct,
+    getIdProducts,
+    generateTicket} from '../helpers.js'
 import Product from '../dao/product.mongoDB.dao.js'
 import Ticket from '../dao/ticket.mongoDB.dao.js'
 import nodemailer from 'nodemailer'
@@ -29,9 +34,9 @@ const createCart = async(req,res) => {
 const getCart = async(req,res) => {
     const cid = req.params.cid
     const cart = await getToCartService(cid)
-    const {products,user} = cart
-    //res.send(JSON.stringify(products))
-    res.render(`${folder}/cartDetail`,{products,user})
+    const {products} = cart
+    const cant = await getCantProducts(cart.products)
+    res.render(`${folder}/cartDetail`,{products,userSession:req.session.user,cant})
 }
 
 const deleteCartProductCant = async(req,res) => {
@@ -121,7 +126,7 @@ const storeCart = async(req,res) => {
         if(result){
             const cart = await getToCartService(cid)
             const {products} = cart
-            const cant = await Helper.getCantProducts(products)
+            const cant = await getCantProducts(products)
             return res.send({success:true,cant,message:'Producto agregado'})
         }
         
@@ -144,22 +149,22 @@ const generatePurchase = async(req,res) => {
     let ticket = {}
     let ids = []
     const user = req.session.user.email
-    const productsNoStock = await Helper.productNoStock(products)//No hay productos en stock
-    const productsInStock = await Helper.getProductsStock(products)
+    const productsNoStock = await productNoStock(products)//No hay productos en stock
+    const productsInStock = await getProductsStock(products)
 
     const newCart = cart
     newCart.products = productsNoStock
 
     if(productsNoStock.length == 0){
-        ticket = await Helper.generateTicket(productsInStock,user) 
+        ticket = await generateTicket(productsInStock,user) 
         const result = await ticketManager.createTicket(ticket)
        if(result){
-           const result2 = await Helper.updateCantProduct(productsInStock,productManager)
+           const result2 = await updateCantProduct(productsInStock,productManager)
            const result3 = await updateCartProducts(newCart._id,newCart)
         }
     }else{
-        ids = Helper.getIdProducts(productsNoStock)//id de productos sin stock
-        ticket = await Helper.generateTicket(productsInStock,user)//Genera ticket con productos en stock
+        ids = getIdProducts(productsNoStock)//id de productos sin stock
+        ticket = await generateTicket(productsInStock,user)//Genera ticket con productos en stock
         await updateCartProducts(newCart._id,newCart)
     }
     await transporter.sendMail({

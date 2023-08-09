@@ -33,7 +33,18 @@ const productSchema = new mongoose.Schema({
     timestamps:{
         type:Number,
         required:true
+    },
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'users'
     }
+})
+productSchema.pre('find',function(){
+    this.populate('owner')
+})
+
+productSchema.pre('findOne',function(){
+    this.populate('owner')
 })
 
 productSchema.plugin(mongoosePaginate)

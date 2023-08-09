@@ -1,7 +1,7 @@
 import CustomError from '../middlewares/errors/CustomError.js'
 import EErrors from '../middlewares/errors/enums.js'
 import {generateProductInfo} from '../middlewares/errors/info.js'
-import Helper from '../helpers.js'
+import {getCantProducts} from '../helpers.js'
 import {getLogger} from '../loggers/logger.js'
 import {
     getAllProducts as getToProductsService,
@@ -28,7 +28,7 @@ const getAllProducts = async(req,res) => {
     const { docs,hasNextPage,nextPage,prevPage,hasPrevPage} = await getToProductsService(limit,page,sort,query)
     const products = docs
     const cart = await getToCartService(req.session.user.cart)
-    const cant = await Helper.getCantProducts(cart.products)
+    const cant = await getCantProducts(cart.products)
 
     getLogger().fatal('Prueba fatal')
     getLogger().error('Prueba error')

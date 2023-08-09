@@ -22,6 +22,8 @@ router.get('/create',storeCart)
 
 router.get('/:cid',getCart)
 
+router.get('/:cid/purchase',generatePurchase)
+
 router.delete('/:cid/products/:pid',deleteCartProductCant)
 
 router.put('/:cid',editCart)
@@ -32,6 +34,5 @@ router.delete('/:cid',deleteCart)
 
 router.post('/:pid',authorization('user'),storeCart)
 
-router.get('/:cid/purchase',generatePurchase)
 
 export default router
