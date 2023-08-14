@@ -77,6 +77,7 @@ export const transporter = nodemailer.createTransport({
 router.post('/reset',async(req,res) => {
     const {email} = req.body
     const objUser = await UserDAO.getOneEmail(email)
+    if(!objUser) return res.send({success:false,message:'Este usuario no se encuentra registrado'})
     //const user = new UserDTO(objUser)
     const accessToken = generateToken(objUser)
     await transporter.sendMail({

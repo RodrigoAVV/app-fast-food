@@ -17,7 +17,7 @@ import {
 
 
 import {authorization} from '../utils.js'
-
+import _ from 'lodash';
 
 const folder = 'products.mongo'
 
@@ -64,8 +64,6 @@ const storeProduct = async(req,res) => {
             message: 'Error al tratar de crear el usuario',
             code: EErrors.INVALID_TYPE_ERROR
         })
-        //return (res.status(400).json({success:false,message:'Faltan datos por completar'}))
-
     }
 
     Object.assign(body,{
@@ -78,12 +76,12 @@ const storeProduct = async(req,res) => {
 
 const editProduct = async(req,res) => {
     const { body } = req
-    const {id,title,description,price,thumbnail,code,stock} = body
-    if(_.isNil(body) || !id || !title || !description || !price  || !thumbnail || !code || !stock)
+    const {productId,title,description,price,thumbnail,code,stock} = body
+    if(_.isNil(body) || !productId || !title || !description || !price  || !thumbnail || !code || !stock)
         return (res.status(400).send({success:false,message:'REQ ERROR (Body missing)'}))
-    if(isValidObjectId(id)){
+    if(isValidObjectId(productId)){
         const obj = {title,description,price,thumbnail,code,stock,timestamps:Date.now()}
-        const data = await editToProductService(id,obj)
+        const data = await editToProductService(productId,obj)
 
         if(!data) return (res.status(500).send(data))
         return res.status(200).send({success:true,message:'Producto actualizado'})
@@ -105,7 +103,7 @@ const deleteProduct = async(req,res) => {
 
 const searchProduct = async(req,res) => {
     const id = req.params.id
-    if(_.isNil(id) || ! id) return (res.status(400).json({success:false,message:'Req error'}))
+    if(_.isNil(id)) return (res.status(400).json({success:false,message:'Req error'}))
     if(isValidObjectId(id)){
         const data = await searchToProductService(id)
         data != null ? res.status(200).send({success:true,data}) :
@@ -113,6 +111,7 @@ const searchProduct = async(req,res) => {
     }else{
         return res.status(500).send({success:false,message:'ID de eliminación no es valido'})
     }
+    
 }
 export {
     getAllProducts,

@@ -19,11 +19,13 @@ const userSchema = new mongoose.Schema({
     run:{
         type:String,
         required:true,
-        index:true
+        index:true,
+        unique:true
     },
     email:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     password:{
         type:String,

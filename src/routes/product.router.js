@@ -24,12 +24,12 @@ router.get('/update',authorization('admin'),updateProduct)
 
 router.get('/destroy',authorization('admin'),destroyProduct)
 
+router.get('/:id',searchProduct)
+
 router.post('/store',authorization('admin'),storeProduct)
 
 router.put('/edit',authorization('admin'),editProduct)
 
 router.delete('/delete',authorization('admin'),deleteProduct)
-
-router.post('/:id',searchProduct)
 
 export default router

@@ -29,5 +29,10 @@ const llamandoAPI = async (data) => {
 		<strong>${mje.innerHTML='Revise su correo'}</strong>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   		</div>`
+	}else{
+		mje.innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>${mje.innerHTML=data2.message}</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  		</div>`
 	}
 }
