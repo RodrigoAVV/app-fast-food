@@ -16,20 +16,20 @@ const router = toAsyncRouter(Router())
 
 import {authorization} from '../utils.js'
 
-router.get('/',getAllProducts)
+router.get('/',getAllProducts)// ok
 
-router.get('/create',authorization('admin'),createProduct)
+router.get('/create',authorization('admin'),createProduct)//ok
 
 router.get('/update',authorization('admin'),updateProduct)
 
 router.get('/destroy',authorization('admin'),destroyProduct)
 
-router.get('/:id',searchProduct)
+router.get('/:id',searchProduct)//ok
 
-router.post('/store',authorization('admin'),storeProduct)
+router.post('/store',authorization('admin'),storeProduct)//ok
 
-router.put('/edit',authorization('admin'),editProduct)
+router.put('/edit',authorization('admin'),editProduct)//ok
 
-router.delete('/delete',authorization('admin'),deleteProduct)
+router.delete('/:id',authorization('admin'),deleteProduct)//ok
 
 export default router

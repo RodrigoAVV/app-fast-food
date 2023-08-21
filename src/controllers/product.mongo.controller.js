@@ -43,7 +43,7 @@ const getAllProducts = async(req,res) => {
 }
 
 const createProduct = async(req,res) => {
-    res.render(`${folder}/create`)
+    res.render(`${folder}/create`,{userSession:req.session.user})
 }
 
 const updateProduct = async(req,res) => {
@@ -56,6 +56,7 @@ const destroyProduct = async(req,res) => {
 
 const storeProduct = async(req,res) => {
     const { body } = req
+    console.log(req.session)
     const {title,description,price,thumbnail,code,stock} = body
     if(_.isNil(body) || !title || !description || !price  || !thumbnail || !code || !stock){
         throw CustomError.createError({
@@ -67,7 +68,8 @@ const storeProduct = async(req,res) => {
     }
 
     Object.assign(body,{
-        timestamps:Date.now()
+        timestamps:Date.now(),
+        owner: req.session.user.id
     })
     const data = await storeToProductService(body)
     data ? res.status(200).send({success:true,message:'Producto agregado correctamente'}) :
@@ -89,8 +91,7 @@ const editProduct = async(req,res) => {
 }
 
 const deleteProduct = async(req,res) => {
-    const {body} = req
-    const {id} = body
+    const id = req.params.id
     if(_.isNil(id)) return (res.status(400).json({success:false,message:'Req error'}))
     if(isValidObjectId(id)){
         const data = await deleteToProductService(id)

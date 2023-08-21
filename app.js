@@ -26,6 +26,10 @@ import initializePassport from './src/config/passport.config.js'
 import config from './src/config/config.js'
 import { getLogger } from './src/loggers/logger.js'
 
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUiExpress from 'swagger-ui-express';
+
+
 const app = express()
 import './src/dao/dbConfig.js'
 
@@ -52,6 +56,22 @@ app.use('/',productFaker)
 
 const fileStorage = FileStore(session)
 app.use(cookieParser())
+
+console.log(`${__dirname}/docs`)
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentación del proyecto fast-food',
+            description: 'API pensada para vender productos online'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+};
+
+const specs = swaggerJsdoc(swaggerOptions);
+app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 app.engine('handlebars',handlebars.engine())
 app.set('views',`${__dirname}/views`)

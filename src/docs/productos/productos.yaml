@@ -1,0 +1,226 @@
+paths:
+  /api/products2:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron obtenidos satisfactoriamente de la BDD
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/products2/id:
+    get:
+      summary: Obtiene un solo producto a partir de su id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El id del producto
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El produco fue obtenido satisfactoriamente de la BDD
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Products'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/products2/createProduct:
+    get:
+      summary: Renderiza una vista con los inputs necesarios para registrar un nuevo producto
+      tags:
+        - Products
+      responses:
+        "200":
+          description: La vista se carga correctamente
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/products2/updateProduct:
+    get:
+      summary: Renderiza una vista con los inputs necesarios para actualizar un producto
+      tags:
+        - Products
+      responses:
+        "200":
+          description: La vista se carga correctamente
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/products2/edit:
+    put:
+      summary: Actualiza el producto a partir de su id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El id del producto
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/editProduct'
+      responses:
+        "200":
+          description: El producto fue actualizado correctamente
+        "404":
+          description: El producto no fue encontrado en la BDD
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/products2/store:
+    post:
+      summary: Registra un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/storeProduct'
+      responses:
+        "200":
+          description: El producto fue registrado correctamente
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/products2/:id:
+    delete:
+      summary: Elimina el producto a partir de su id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El id del producto
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El producto fue eliminado correctamente
+        "404":
+          description: El producto no fue encontrado en la BDD
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de mongodb
+        first_name:
+          type: String
+          description: Nombre del usuario
+        last_name:
+          type: String
+          description: Apellido del usuario
+        email:
+          type: String
+          description: Correo del usuario
+        password:
+          type: String
+          description: Password del usuario
+        role:
+          type: String
+          description: Rol del usuario
+      example:
+        _id: 646a489f316ff0e3ccfd0890
+        title: Completo
+        description: Completo palta mostaza
+        price: 2690
+        thumbnail: Array
+        code: 107
+        stock: 14
+        timestamps: 1684722551000
+        owner: 64912393f78165daef615323
+  requestBodies:
+    editProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Titulo del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnail:
+          type: Array
+          description: Imagenes del producto
+        code:
+          type: String
+          description: Codigo del producto
+        stock:
+          type: Number
+          description: Cantidad de productos
+        timestamps:
+          type: Number
+          description: Fecha y hora de registro del prroducto
+        owner:
+          type: ObjectId
+          description: id del usurio que registró el producto
+      example:
+        _id: 646a489f316ff0e3ccfd0890
+        title: Completo
+        description: Completo palta mostaza
+        price: 2690
+        thumbnail: Array
+        code: 107
+        stock: 14
+        timestamps: 1684722551000
+        owner: 64912393f78165daef615323
+    storeProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Titulo del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnail:
+          type: Array
+          description: Imagenes del producto
+        code:
+          type: String
+          description: Codigo del producto
+        stock:
+          type: Number
+          description: Cantidad de productos
+        timestamps:
+          type: Number
+          description: Fecha y hora de registro del prroducto
+        owner:
+          type: ObjectId
+          description: id del usurio que registró el producto
+      example:
+        _id: 646a489f316ff0e3ccfd0890
+        title: Completo
+        description: Completo palta mostaza
+        price: 2690
+        thumbnail: Array
+        code: 107
+        stock: 14
+        timestamps: 1684722551000
+        owner: 64912393f78165daef615323

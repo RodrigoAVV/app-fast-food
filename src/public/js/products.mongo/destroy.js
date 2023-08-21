@@ -14,10 +14,11 @@ const llamandoAPI = async (data) => {
 		headers: {
 			'Content-Type':'application/json'
 		},
-        body:JSON.stringify(data),
+        //body:JSON.stringify(data),
 		cache: 'no-cache'
 	}
-	const respuesta = await fetch(`/api/products2/delete`,options)
+	const id = data.id
+	const respuesta = await fetch(`/api/products2/${id}`,options)
 	const data2 = await respuesta.json()
 	data2.success ? mje.innerHTML=data2.message : mje.innerHTML='Error'
 	console.log(data2)
