@@ -1,9 +1,11 @@
 import {getCantProducts,
-    productNoStock,
-    getProductsStock,
-    updateCantProduct,
-    getIdProducts,
-    generateTicket} from '../helpers.js'
+        productNoStock,
+        getProductsStock,
+        updateCantProduct,
+        getIdProducts,
+        generateTicket}
+    from '../helpers.js'
+
 import Product from '../dao/product.mongoDB.dao.js'
 import Ticket from '../dao/ticket.mongoDB.dao.js'
 import nodemailer from 'nodemailer'
@@ -19,17 +21,7 @@ import {
 } from '../services/cart.mongo.service.js'
 
 import _ from 'lodash';
-
-
 import { isValidObjectId, Types } from "mongoose";
-
-const createCart = async(req,res) => {
-    const products=[
-        {}
-    ]
-    const result = await storeToCartService(products)
-    res.status(200).json(result)
-}
 
 const getCart = async(req,res) => {
     const cid = req.params.cid
@@ -56,7 +48,7 @@ const deleteCartProductCant = async(req,res) => {
         }
     }
 }
-
+/*
 const editCart = async(req,res) => {
     const cid = req.params.cid
     if(isValidObjectId(cid)){
@@ -70,7 +62,7 @@ const editCart = async(req,res) => {
         }
     }
 }
-
+*/
 const editCartProductCant = async(req,res) => {
     const cid = req.params.cid
     const pid = req.params.pid
@@ -177,9 +169,8 @@ const generatePurchase = async(req,res) => {
 }
 
 export{
-    createCart,
     getCart,
-    editCart,
+    //editCart,
     deleteCartProductCant,
     editCartProductCant,
     deleteCart,

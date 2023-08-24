@@ -1,0 +1,224 @@
+paths:
+  /api/carts2/:id:
+    get:
+      summary: Obtiene un solo carrito a partir de su id
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El id del carrito
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El carrito fue obtenido satisfactoriamente de la BDD
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Carts'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/carts2/create:
+    get:
+      summary: Agrega un nuevo producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El id del producto
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/storeCart'
+      responses:
+        "200":
+          description: El producto fue actualizado correctamente
+        "404":
+          description: El producto no fue encontrado en la BDD
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /:cid/purchase:
+    get:
+      summary: Obtiene un solo carrito por su id
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El id del carrito
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/purchase'
+      responses:
+        "200":
+          description: El ticket fue generado correctamente
+        "404":
+          description: El ticket no fue encontrado en la BDD
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /api/products2/updateProduct:
+    get:
+      summary: Renderiza una vista con los inputs necesarios para actualizar un producto
+      tags:
+        - Products
+      responses:
+        "200":
+          description: La vista se carga correctamente
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /:cid/products/:pid:
+    put:
+      summary: Actualiza el producto de un carrito a partir de su id
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El id del carrito
+          schema:
+            $type: String
+        - name: id
+          in: path
+          required: true
+          description: El id del producto
+          schema:
+            $type: String
+        - name: cant
+          in: path
+          required: true
+          description: Cantidad de producto
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/editCartProductCant'
+      responses:
+        "200":
+          description: El producto fue actualizado correctamente
+        "404":
+          description: El producto no fue encontrado en la BDD
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /:pid:
+    post:
+      summary: Registra un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/storeCart'
+      responses:
+        "200":
+          description: El producto fue registrado correctamente
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+  /:cid:
+    delete:
+      summary: Elimina los productos del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Los productos fueron eliminados correctamente del carrito
+        "404":
+          description: El carrito no fue encontrado en la BDD
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión a la BDD
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: String
+          description: Id autogenerado de mongodb
+        product:
+          type: Object
+          description: Datos de cada producto
+        quantity:
+          type: number
+          description: Cantidad de producto en el carrito
+      example:
+        _id: 646a489f316ff0e3ccfd0890
+        products:
+          product: Object
+        quantity: 1,
+  requestBodies:
+    storeCart:
+      type: object
+      properties:
+      _id:
+        type: String
+        description: Id autogenerado de mongodb
+      product:
+        type: Object
+        description: Datos de cada producto
+      quantity:
+        type: number
+        description: Cantidad de producto en el carrito
+      example:
+        _id: 646a489f316ff0e3ccfd0890
+        product: Object
+        quantity: 1,
+    purchase:
+      type: object
+      properties:
+        _id:
+          type: String
+          description: Id autogenerado de mongodb
+        code:
+          type: String
+          description: Código del ticket
+        purchase_datetime:
+          type: datetime
+          description: Fecha y hora en que se generó el ticket
+        example:
+          _id: 64b9fd325c1f76d14a819fd1
+          code: 4c716870-5c9a-4b4e-9248-d1e03d6dda05
+          purchase_datetime: 2023-07-21T03:36:18.000+00:00
+          amount: 161260
+          purchaser: maria@gmail.com
+    editCartProductCant:
+      type: object
+      properties:
+        cid:
+          type: String
+          description: Id del carrito
+        pid:
+          type: String
+          description: Id del producto
+        cant:
+          type: Number
+          description: Cantidad de producto
+        example:
+          cid: 64b9fd325c1f76d14a819fd1
+          pid: 645e7a4dd8617300ce644577
+          cant: 2

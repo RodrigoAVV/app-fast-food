@@ -1,10 +1,10 @@
+
 const mje = document.querySelector('#mje')
 document.querySelector('#createProductFile').addEventListener('submit',e=>{
     e.preventDefault()
     const data = Object.fromEntries(
         new FormData(e.target)
     )
-    //console.log(data)
     llamandoAPI(data)
 })
 
