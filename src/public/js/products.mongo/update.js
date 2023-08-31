@@ -52,7 +52,8 @@ const llamandoAPI2 = async (data) => {
         body:JSON.stringify(data),
 		cache: 'no-cache'
 	}
-	const respuesta = await fetch(`/api/products2/edit`,options)
+	const id = data.productId
+	const respuesta = await fetch(`/api/products2/${id}`,options)
 	const data2 = await respuesta.json()
 	if(data2.success){
 		mjeProductUpdate.innerHTML=data2.message

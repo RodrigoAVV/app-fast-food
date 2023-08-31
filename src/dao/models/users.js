@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
         default:'user'
     },
     age:{
-        type:String,
+        type:Number,
         required:true
     },
     cart:{

@@ -8,7 +8,8 @@ import productFilesRouter from './src/routes/product.files.router.js'
 
 import productMongoDBRouter from './src/routes/product.router.js'
 
-import userViewRouter from './src/routes/users.router/views.router.js'
+import userRouter from './src/routes/users.router.js'
+
 import userSessionRouter from './src/routes/users.router/sessions.router.js'
 
 import productFaker from './src/routes/products.faker.js'
@@ -86,7 +87,7 @@ app.use('/api/products',productFilesRouter)
 app.use('/api/carts',cartFilesRouter)
 
 app.subscribe(cookieParser())
-app.use('/',userViewRouter)
+app.use('/api/users',userRouter)
 app.use('/api/users',userSessionRouter)
 app.use(errorHandler)
 

@@ -1,7 +1,5 @@
 import {Router} from 'express'
-
 import {authorization} from '../utils.js'
-
 
 import{
     getCart,
@@ -13,10 +11,7 @@ import{
     generatePurchase
 } from '../controllers/cart.mongo.controller.js'
 
-
-
 const router = Router()
-
 
 router.get('/create',storeCart)//ok
 

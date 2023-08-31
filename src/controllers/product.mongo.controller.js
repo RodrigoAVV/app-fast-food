@@ -56,7 +56,6 @@ const destroyProduct = async(req,res) => {
 
 const storeProduct = async(req,res) => {
     const { body } = req
-    console.log(req.session)
     const {title,description,price,thumbnail,code,stock} = body
     if(_.isNil(body) || !title || !description || !price  || !thumbnail || !code || !stock){
         throw CustomError.createError({
@@ -72,8 +71,9 @@ const storeProduct = async(req,res) => {
         owner: req.session.user.id
     })
     const data = await storeToProductService(body)
-    data ? res.status(200).send({success:true,message:'Producto agregado correctamente'}) :
-        res.status(200).send({success:false,message:'Error al registrar este producto'})
+    if(data)
+        return res.status(200).send({success:true,message:'Producto agregado correctamente',data:data})
+    return res.status(400).send({success:false,message:'Error al registrar este producto'})
 }
 
 const editProduct = async(req,res) => {
@@ -82,7 +82,7 @@ const editProduct = async(req,res) => {
     if(_.isNil(body) || !productId || !title || !description || !price  || !thumbnail || !code || !stock)
         return (res.status(400).send({success:false,message:'REQ ERROR (Body missing)'}))
     if(isValidObjectId(productId)){
-        const obj = {title,description,price,thumbnail,code,stock,timestamps:Date.now()}
+        const obj = {title,description,price,thumbnail,code,stock}
         const data = await editToProductService(productId,obj)
 
         if(!data) return (res.status(500).send(data))
