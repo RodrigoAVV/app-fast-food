@@ -1,4 +1,5 @@
 import {Router} from 'express'
+import uploader from "../../src/uploaders.js";
 
 import {
     getAllProducts,
@@ -27,7 +28,7 @@ router.get('/destroy',/*authorization('admin'),*/destroyProduct)
 
 router.get('/:id',searchProduct)//ok
 
-router.post('/store',/*authorization('admin'),*/storeProduct)//ok
+router.post('/store',/*authorization('admin'),*/uploader.array('thumbnail', 3),storeProduct)//ok
 
 router.put('/:id',/*authorization('admin'),*/editProduct)//ok
 

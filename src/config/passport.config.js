@@ -69,12 +69,10 @@ const initializePassport = () => {
         try {
             const user = await userModel.findOne({run})
             if(!user){
-                console.log('user no existe')
                 return done(null,false)
             }
             if(!isValidPassword(user,password))
                 return done(null,false)
-            
             return done(null,user)
         } catch (err) {
             return done(`Error al obtener el usuario: ${err}`)

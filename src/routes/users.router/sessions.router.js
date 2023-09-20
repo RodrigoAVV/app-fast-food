@@ -3,14 +3,18 @@ import {Router} from 'express'
 import UserDTO from '../../dto/userDTO.js';
 import nodemailer from 'nodemailer'
 import UserModel from '../../dao/user.mongoDB.dao.js'
-import userDTO from '../../dto/userDTO.js'
-import { verifyToken,isValidPassword,createHash } from '../../utils.js';
 
 const UserDAO = new UserModel()
 
 import _ from 'lodash';
-import { passportCall, generateToken, authToken } from '../../utils.js';
+import {passportCall,
+        generateToken,
+        authToken,
+        verifyToken,
+        isValidPassword,
+        createHash} from '../../utils.js';
 
+import uploader from "../../uploaders.js";
 import passport from 'passport';
 
 const router = Router()
@@ -44,6 +48,9 @@ router.post('/login',passport.authenticate('login',{failureRedirect:'faillogin'}
         id:req.user._id,
         email:req.user.email
     }
+    const {email} = req.user
+    const date = Date.now()   
+    const resp = await UserDAO.updateSet(email,date)
     res.cookie('cookieToken',token,{maxAge:60*60*1000,httpOnly:true}).send({success:true})
 })
 
@@ -56,7 +63,10 @@ router.get('/faillogin',async(req,res)=>{
     res.send({success:false,message:'Fallo el login'})
 })
 
-router.get('/logout',(req,res) => {
+router.get('/logout',async(req,res) => {
+    const {email} = req.session.user
+    const date = Date.now()   
+    const resp = await UserDAO.updateSet(email,date)
     req.session.destroy(err =>{
         if(err)
             return res.status(500).send({succes:false,message:'Error'})
@@ -69,7 +79,7 @@ export const transporter = nodemailer.createTransport({
     port: 587,
     auth: {
         user: 'rodrigo.vidal.vera@gmail.com',
-        pass: 'lnsfmesdshimifut'
+        pass: 'nlvhsvqnmnxfckaw'
     }
 })
 
@@ -111,11 +121,28 @@ router.post('/resetpass',async(req,res) => {
         return res.send({success:false,message:'Token ya fue utilizado o ha expirado'})
     }
 
-
-    
-    
-    
 })
 
+router.post('/perfil',uploader.single('fileProfile'),async(req,res) => {
+    if(req.file){
+        res.redirect('/api/products2')
+    }
+})
+
+router.post('/premium',uploader.array('docs', 3),async(req,res) => {
+    if(req.files.length === 3){
+        const uid = req.body.uid
+        const user = await UserDAO.getOneId(uid)
+        const files = req.files
+        files.forEach(function(data){
+            user.documents.push({name:data.filename,reference:data.path})
+        })
+        const result = await UserDAO.updateSetDocuments(uid,user.documents)
+        if(result)
+            res.redirect('/api/products2')
+    }else{
+        return res.send({success:false,message:'No ha terminado de cargar sus documentos'})
+    }
+})
 
 export default router

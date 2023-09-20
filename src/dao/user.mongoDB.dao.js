@@ -10,8 +10,8 @@ export default class User{
         return user
     }
 
-    getOneId = async (id) => {
-        const user = await userModel.findOne({_id})
+    getOneId = async (uid) => {
+        const user = await userModel.findOne({_id:uid})
         return user
     }
 
@@ -26,6 +26,16 @@ export default class User{
 
     update = async (email,user) => {
         const result = await userModel.updateOne({email:email},user)
+        return result
+    }
+
+    updateSet = async (email,date) => {
+        const result = await userModel.updateOne({email:email}, { $set: {last_connection:date}})
+        return result
+    }
+
+    updateSetDocuments = async (uid,documents) => {
+        const result = await userModel.updateOne({_id:uid}, { $set: {documents:documents,role:'premium'}})
         return result
     }
 }

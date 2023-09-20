@@ -1,8 +1,8 @@
 import CustomError from '../middlewares/errors/CustomError.js'
 import EErrors from '../middlewares/errors/enums.js'
 import {generateProductInfo} from '../middlewares/errors/info.js'
-import {getCantProducts} from '../helpers.js'
 import {getLogger} from '../loggers/logger.js'
+import multer from 'multer'
 import {
     getAllProducts as getToProductsService,
     storeProduct as storeToProductService,
@@ -11,6 +11,7 @@ import {
     searchProduct as searchToProductService
 } from '../services/product.mongo.service.js'
 
+import {getCantProducts} from '../helpers.js'
 import {
     getCart as getToCartService
 } from '../services/cart.mongo.service.js'
@@ -27,9 +28,11 @@ const getAllProducts = async(req,res) => {
     const { page = 1,limit = 5, sort = '', query = '' } = req.query
     const { docs,hasNextPage,nextPage,prevPage,hasPrevPage} = await getToProductsService(limit,page,sort,query)
     const products = docs
+    
     const cart = await getToCartService(req.session.user.cart)
-    const cant = await getCantProducts(cart.products)
 
+    const cant = await getCantProducts(cart.products)
+    
     getLogger().fatal('Prueba fatal')
     getLogger().error('Prueba error')
     getLogger().warning('Prueba warning')
@@ -37,13 +40,15 @@ const getAllProducts = async(req,res) => {
     getLogger().http('Prueba http')
     getLogger().debug('Prueba debug')
 
-
-    res.render(`${folder}/indexDoc`,
-    {products,hasPrevPage,hasNextPage,nextPage,prevPage,userSession:req.session.user,cant})
+    
+    //res.status(200).send({success:true,products:products})
+    res.render(`${folder}/indexDoc`,{products,hasPrevPage,hasNextPage,nextPage,prevPage,userSession:req.session.user,cant})
 }
 
 const createProduct = async(req,res) => {
-    res.render(`${folder}/create`,{userSession:req.session.user})
+    const cart = await getToCartService(req.session.user.cart)
+    const cant = await getCantProducts(cart.products)
+    res.render(`${folder}/create`,{userSession:req.session.user,cant})
 }
 
 const updateProduct = async(req,res) => {
@@ -56,23 +61,27 @@ const destroyProduct = async(req,res) => {
 
 const storeProduct = async(req,res) => {
     const { body } = req
-    const {title,description,price,thumbnail,code,stock} = body
-    if(_.isNil(body) || !title || !description || !price  || !thumbnail || !code || !stock){
+    const {title,description,price,code,stock} = body
+    if(_.isNil(body) || !title || !description || !price || !code || !stock){
         throw CustomError.createError({
             name: 'ProductError',
-            cause: generateProductInfo({title,description,price,thumbnail,code,stock}),
+            cause: generateProductInfo({title,description,price,code,stock}),
             message: 'Error al tratar de crear el usuario',
             code: EErrors.INVALID_TYPE_ERROR
         })
     }
-
+    const thumbnail = []
+    req.files.forEach(function(data){
+        thumbnail.push(data.filename.trim())
+    })
     Object.assign(body,{
         timestamps:Date.now(),
-        owner: req.session.user.id
+        owner: req.session.user.id,
+        thumbnail:thumbnail
     })
     const data = await storeToProductService(body)
     if(data)
-        return res.status(200).send({success:true,message:'Producto agregado correctamente',data:data})
+        return res.redirect('/api/products2')
     return res.status(400).send({success:false,message:'Error al registrar este producto'})
 }
 
@@ -112,7 +121,6 @@ const searchProduct = async(req,res) => {
     }else{
         return res.status(500).send({success:false,message:'ID de eliminación no es valido'})
     }
-    
 }
 export {
     getAllProducts,

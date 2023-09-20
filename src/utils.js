@@ -4,31 +4,30 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
 
-
 const PRIVATE_KEY ='CoderHouse39760'
 
 export const generateToken = (user) => {
     const token = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '1h' });
     return token;
-};
+}
 
 export const authToken = (req, res, next) => {
-    const authToken = req.headers.authorization;
+    const authToken = req.headers.authorization
     
-    if(!authToken) return res.status(401).send({error: 'Not authenticated'});
+    if(!authToken) return res.status(401).send({error: 'Not authenticated'})
 
-    const token = authToken.split(' ')[1];
+    const token = authToken.split(' ')[1]
 
     jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
-        if (error) return res.status(403).send({error: 'Not authorized'});
+        if (error) return res.status(403).send({error: 'Not authorized'})
         req.user = credentials.user;
-        next();
+        next()
     })
 }
 
 export const verifyToken = (token) => {
     try {
-        const decoded = jwt.verify(token, PRIVATE_KEY);
+        const decoded = jwt.verify(token, PRIVATE_KEY)
         return decoded
       } catch(err) {
         // err

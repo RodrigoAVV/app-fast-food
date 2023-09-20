@@ -40,6 +40,22 @@ const userSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    documents:{
+        type:[
+            {
+                name:{
+                    type:String
+                },
+                reference:{
+                    type:String,
+                }
+            }
+        ],
+        default:[]
+    },
+    last_connection:{
+        type:Number
+    },
     cart:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'carts'

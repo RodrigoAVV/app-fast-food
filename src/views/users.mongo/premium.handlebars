@@ -1,0 +1,11 @@
+<form enctype="multipart/form-data" method="post" action="/api/users/premium">
+    <div class="input-group mb-2">
+        <span class="input-group-text">Identificación</span>
+        <span class="input-group-text">Comprobante de domicilio</span>
+        <span class="input-group-text">Comprobante de estado de cuenta</span>
+        <input type="file" multiple name="docs" id="docs" class="form-control" aria-label="docs">
+       
+    </div>
+     <input name="uid" value="{{userSession.id}}" type="hidden">
+    <button type="submit" class="btn btn-primary">Nuevo producto</button>
+</form>

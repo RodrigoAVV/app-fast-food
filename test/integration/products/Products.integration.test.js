@@ -26,7 +26,7 @@ describe('Testing de productos', () => {
 
     it('GET de /api/products2 se debe corroborrar que se obtengan los productos de manera correcta', async () => {
         const { statusCode, _body } = await requester.get('/api/products2');
-
+        
         expect(statusCode).to.be.eql(200);
         //expect(_body).to.have.property('status');
         //expect(_body).to.have.property('payload');

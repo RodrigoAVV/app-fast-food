@@ -5,20 +5,14 @@ import cartFilesRouter from './src/routes/cart.files.router.js'
 import cartMongoDBRouter from './src/routes/cart.mongoDB.router.js'
 import messageMongoDBRouter from './src/routes/message.mongoDB.router.js'
 import productFilesRouter from './src/routes/product.files.router.js'
-
 import productMongoDBRouter from './src/routes/product.router.js'
-
-import userRouter from './src/routes/users.router.js'
-
-import userSessionRouter from './src/routes/users.router/sessions.router.js'
-
+//import userRouter from './src/routes/users.router.js'
+import userView from './src/routes/users.router/views.router.js'
+import sessionRouter from './src/routes/users.router/sessions.router.js'
 import productFaker from './src/routes/products.faker.js'
-
 import errorHandler from './src/middlewares/index.js'
 import handlebars from 'express-handlebars'
 import __dirname from './src/utils.js'
-import {Server} from 'socket.io'
-
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import FileStore from 'session-file-store'
@@ -26,10 +20,9 @@ import passport from 'passport'
 import initializePassport from './src/config/passport.config.js'
 import config from './src/config/config.js'
 import { getLogger } from './src/loggers/logger.js'
-
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
-
+import {Server} from 'socket.io'
 
 const app = express()
 import './src/dao/dbConfig.js'
@@ -58,8 +51,6 @@ app.use('/',productFaker)
 const fileStorage = FileStore(session)
 app.use(cookieParser())
 
-console.log(`${__dirname}/docs`)
-
 const swaggerOptions = {
     definition: {
         openapi: '3.0.1',
@@ -87,10 +78,10 @@ app.use('/api/products',productFilesRouter)
 app.use('/api/carts',cartFilesRouter)
 
 app.subscribe(cookieParser())
-app.use('/api/users',userRouter)
-app.use('/api/users',userSessionRouter)
+//app.use('/api/users',userRouter)
+app.use('/',userView)
+app.use('/api/users',sessionRouter)
 app.use(errorHandler)
-
 
 const server = app.listen(config.port,()=>getLogger().info(`Listening on port ${config.port}`))
 

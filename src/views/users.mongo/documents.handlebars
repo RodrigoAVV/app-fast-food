@@ -1,0 +1,8 @@
+<form enctype="multipart/form-data" method="post" action="/api/users/perfil">
+    <div class="input-group mb-2">
+    <span class="input-group-text">Imagen de perfil</span>
+    <input name="fileProfile" id="fileProfile" type="file" class="form-control" aria-label="perfil">
+    <input name="uid" value="{{userSession.id}}" type="hidden">
+    </div>
+    <button type="submit" class="btn btn-primary">Nuevo producto</button>
+</form>

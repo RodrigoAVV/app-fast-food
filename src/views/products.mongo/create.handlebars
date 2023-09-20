@@ -1,5 +1,5 @@
 <h3 id="mje"></h3>
-<form id="createProduct" enctype="multipart/form-data">
+<form id="createProduct" enctype="multipart/form-data" method="post" action="/api/products2/store">
     <div class="input-group mb-2">
     <span class="input-group-text">#</span>
     <input name="title" type="text" class="form-control" placeholder="Titulo" aria-label="Username">
@@ -11,7 +11,7 @@
 
     <div class="input-group mb-2">
     <span class="input-group-text">#</span>
-    <input name="thumbnail" type="file" class="form-control" aria-label="Username">
+    <input multiple name="thumbnail" type="file" class="form-control" aria-label="thumbnail">
     <span class="input-group-text">#</span>
     <input name="code" type="text" class="form-control" placeholder="Código" aria-label="Server">
     <span class="input-group-text">#</span>
@@ -19,4 +19,4 @@
     </div>
     <button type="submit" class="btn btn-primary">Nuevo producto</button>
 </form>
-<script src="/js/products.mongo/create.js"></script>
+<!--<script src="/js/products.mongo/create.js"></script>-->
