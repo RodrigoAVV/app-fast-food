@@ -27,8 +27,9 @@ const getCart = async(req,res) => {
     const cid = req.params.cid
     const cart = await getToCartService(cid)
     const {products} = cart
+    console.log(products)
     const cant = await getCantProducts(cart.products)
-    res.render(`${folder}/cartDetail`,{products,userSession:req.session.user,cant})
+    return res.render(`${folder}/cartDetail`,{products,userSession:req.session.user,cant})
 }
 
 const deleteCartProductCant = async(req,res) => {

@@ -60,7 +60,6 @@ const initializePassport = () => {
             const result = await userModel.create(userData)
             return done(null,result)
         } catch (err) {
-            console.log(err)
             return done(`Error al obtener el usuario: ${err}`)
         }
     }))

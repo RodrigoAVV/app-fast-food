@@ -6,9 +6,9 @@ import cartMongoDBRouter from './src/routes/cart.mongoDB.router.js'
 import messageMongoDBRouter from './src/routes/message.mongoDB.router.js'
 import productFilesRouter from './src/routes/product.files.router.js'
 import productMongoDBRouter from './src/routes/product.router.js'
-//import userRouter from './src/routes/users.router.js'
-import userView from './src/routes/users.router/views.router.js'
-import sessionRouter from './src/routes/users.router/sessions.router.js'
+import userRouter from './src/routes/users.router.js'
+//import userView from './src/routes/users.router/views.router.js'
+//import sessionRouter from './src/routes/users.router/sessions.router.js'
 import productFaker from './src/routes/products.faker.js'
 import errorHandler from './src/middlewares/index.js'
 import handlebars from 'express-handlebars'
@@ -78,9 +78,9 @@ app.use('/api/products',productFilesRouter)
 app.use('/api/carts',cartFilesRouter)
 
 app.subscribe(cookieParser())
-//app.use('/api/users',userRouter)
-app.use('/',userView)
-app.use('/api/users',sessionRouter)
+app.use('/api/users',userRouter)
+//app.use('/',userView)
+//app.use('/api/users',sessionRouter)
 app.use(errorHandler)
 
 const server = app.listen(config.port,()=>getLogger().info(`Listening on port ${config.port}`))

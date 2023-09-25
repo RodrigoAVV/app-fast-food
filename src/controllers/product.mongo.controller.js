@@ -28,7 +28,6 @@ const getAllProducts = async(req,res) => {
     const { page = 1,limit = 5, sort = '', query = '' } = req.query
     const { docs,hasNextPage,nextPage,prevPage,hasPrevPage} = await getToProductsService(limit,page,sort,query)
     const products = docs
-    
     const cart = await getToCartService(req.session.user.cart)
 
     const cant = await getCantProducts(cart.products)
@@ -40,7 +39,6 @@ const getAllProducts = async(req,res) => {
     getLogger().http('Prueba http')
     getLogger().debug('Prueba debug')
 
-    
     //res.status(200).send({success:true,products:products})
     res.render(`${folder}/indexDoc`,{products,hasPrevPage,hasNextPage,nextPage,prevPage,userSession:req.session.user,cant})
 }
@@ -61,6 +59,7 @@ const destroyProduct = async(req,res) => {
 
 const storeProduct = async(req,res) => {
     const { body } = req
+    
     const {title,description,price,code,stock} = body
     if(_.isNil(body) || !title || !description || !price || !code || !stock){
         throw CustomError.createError({
@@ -83,6 +82,7 @@ const storeProduct = async(req,res) => {
     if(data)
         return res.redirect('/api/products2')
     return res.status(400).send({success:false,message:'Error al registrar este producto'})
+    
 }
 
 const editProduct = async(req,res) => {

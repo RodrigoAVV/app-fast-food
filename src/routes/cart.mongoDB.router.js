@@ -27,7 +27,6 @@ router.put('/:cid/products/:pid',editCartProductCant)//ok
 
 router.delete('/:cid',deleteCart)//ok
 
-//router.post('/:pid',authorization('user'),storeCart)
-
+router.post('/:pid',authorization('user'),storeCart)
 
 export default router

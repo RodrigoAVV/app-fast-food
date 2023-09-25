@@ -1,19 +1,25 @@
 const mje = document.querySelector('#mje')
+const fileInput = document.querySelector('#thumbnail');
 document.querySelector('#createProduct').addEventListener('submit',e=>{
     e.preventDefault()
     const data = Object.fromEntries(
-        new FormData(e.target)
+      	new FormData(e.target)
     )
-    llamandoAPI(data)
+	const files = fileInput.files
+	const formData = new FormData()
+	formData.append('files',files)
+	formData.append('data',data)
+	llamandoAPI(formData)
 })
 
-const llamandoAPI = async (data) => {
+const llamandoAPI = async (formData) => {
 	const options = {
 		method: 'POST',
 		headers: {
-			'Content-Type':'application/json'
+			'Content-Type':'application/json',
+			'Content-Type':'multipart/form-data; boundary=something'
 		},
-        body:JSON.stringify(data),
+        body:formData,
 		cache: 'no-cache'
 	}
 	const respuesta = await fetch(`/api/products2/store`,options)

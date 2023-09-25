@@ -47,24 +47,24 @@ const resetPassord = async(req,res) => {
     }
 }
 
-const gitHub = (passport.authenticate('github',{scope:['user.email']}),async (req,res) => {
+const gitHub = async (req,res) => {
     return res.send({success:true,message:'Usuario registrado'})
-})
+}
 
-const githubCallback = (passport.authenticate('github',{failureRedirect:'/'}),async (req,res) => {
+const githubCallback = async (req,res) => {
     req.session.user = req.user,
     res.redirect('/api/products2')
-})
+}
 
-const store = ('/store',passport.authenticate('store',{failureRedirect:'failregister'}), async(req,res) => {
+const store = async(req,res) => {
     return res.send({success:true,message:'Usuario registrado'})
-})
+}
 
-const failRegister = ('/failregister',async(req,res) => {
+const failRegister = async(req,res) => {
     return res.send({success:false,message:'Error al registrar el usuario'})
-})
+}
 
-const login = (passport.authenticate('login',{failureRedirect:'faillogin'}) ,async(req,res) => {
+const login = async(req,res) => {
     if(!req.user)
         return res.status(400).send({success:false,message:'Credenciales invalidas'})
     const token = generateToken(req.user)
@@ -76,22 +76,22 @@ const login = (passport.authenticate('login',{failureRedirect:'faillogin'}) ,asy
         email:req.user.email
     }
     return res.cookie('cookieToken',token,{maxAge:60*60*1000,httpOnly:true}).send({success:true})
-})
+}
 
-const current = (passportCall('jwt'),passport.authenticate('jwt',{session:false}),(req,res) => {
+const current = (req,res) => {
     const userDTO = new UserDTO(req.user)
     return res.send({success:true,payload:userDTO})
-})
+}
 
-const failLogin = (async(req,res) => {
+const failLogin = async(req,res) => {
     return res.send({success:false,message:'Fallo el login'})
-})
+}
 
 const logout = (req,res) => {
     req.session.destroy(err =>{
         if(err)
             return res.status(500).send({succes:false,message:'Error'})
-        res.redirect('/')
+        res.redirect('/api/users')
     })
 }
 
@@ -139,12 +139,30 @@ const resetPass = async(req,res) => {
     }
 }
 
-const userDocuments = async(req,res) => {
-    console.log('documents')
-}
-
 const documents = async(req,res) => {
     return res.render(`${folder}/documents`)
+}
+
+const perfil = async(req,res) => {
+    if(req.file){
+        res.redirect('/api/products2')
+    }
+}
+
+const premium = async(req,res) => {
+    if(req.files.length === 3){
+        const uid = req.body.uid
+        const user = await UserDAO.getOneId(uid)
+        const files = req.files
+        files.forEach(function(data){
+            user.documents.push({name:data.filename,reference:data.path})
+        })
+        const result = await UserDAO.updateSetDocuments(uid,user.documents)
+        if(result)
+            res.redirect('/api/products2')
+    }else{
+        return res.send({success:false,message:'No ha terminado de cargar sus documentos'})
+    }
 }
 
 export {
@@ -162,6 +180,7 @@ export {
     logout,
     reset,
     resetPass,
-    userDocuments,
-    documents
+    documents,
+    perfil,
+    premium
 }
